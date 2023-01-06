@@ -1,7 +1,6 @@
-IDIR=include
-SRC_DIR=src
+IDIR=captidom-channel-common/include
+SRC_DIR=captidom-channel-common/src
 EXAMPLE_DIR=example
-LDIR=../lib
 OBJ_DIR=build/obj
 BINDIR=build
 
