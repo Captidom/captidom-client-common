@@ -40,6 +40,7 @@ namespace captidom
         void getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes);
         bool supportsType(ChannelType type);
         void getSupportedModes(const ChannelMode **supportedModes, int &maxModes);
+        bool supportsMode(ChannelMode mode);
 
         bool setConfig(const ChannelConfig *config);
 
