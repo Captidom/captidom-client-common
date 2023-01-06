@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
-#include "list.h"
-#include "poll-channel.h"
+#include "captidom-channel-common/list.h"
+#include "captidom-channel-common/poll-channel.h"
 
 namespace {
     static const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT};

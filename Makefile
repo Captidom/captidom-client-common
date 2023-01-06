@@ -1,5 +1,6 @@
-IDIR=captidom-channel-common/include
-SRC_DIR=captidom-channel-common/src
+LIB_IDIR=lib/include/captidom-channel-common
+EXAMPLE_IDIR=lib/include
+SRC_DIR=lib/src
 EXAMPLE_DIR=example
 OBJ_DIR=build/obj
 BINDIR=build
@@ -12,7 +13,8 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 CC=$(CROSS_COMPILE)gcc
 DEPENDENCY_CFLAGS=
 DEPENDENCY_CXXFLAGS=
-CFLAGS=$(GLOBAL_CFLAGS) -I$(IDIR) -std=c++11 -fPIC
+LIB_CFLAGS=$(GLOBAL_CFLAGS) -I$(LIB_IDIR) -std=c++11 -fPIC
+EXAMPLE_CFLAGS=$(GLOBAL_CFLAGS) -I$(EXAMPLE_IDIR) -std=c++11
 STATIC_LIBS = -lstdc++
 SHARED_LIBS = 
 LIBS = -Wl,-Bstatic $(STATIC_LIBS) -Wl,-Bdynamic $(SHARED_LIBS)
@@ -33,18 +35,18 @@ CONFIGURE_ARCH=
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(LIB_CFLAGS)
 
 $(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(EXAMPLE_CFLAGS)
 
 
 captidom-channel-common.so: $(OBJ_FILES)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -shared -o $(BINDIR)/$@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
+	$(CC) -shared -o $(BINDIR)/$@ $^ $(LIB_CFLAGS) $(LIBS) $(LDFLAGS)
 
 
 library: captidom-channel-common.so
@@ -52,7 +54,7 @@ library: captidom-channel-common.so
 $(BINDIR)/example: library $(EXAMPLE_OBJ_FILES)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-channel-common.so
+	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-channel-common.so
 
 example: $(BINDIR)/example
 
