@@ -1,0 +1,173 @@
+stages:
+  - build
+  - deploy
+
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_TLS_CERTDIR: "/certs"
+  BASE_IMAGE: $CI_REGISTRY/captidom/docker-base-build-image:0.6
+
+
+build:linux_x64_86:
+  stage: build
+  image: $BASE_IMAGE
+  script:
+  - make -v
+  - sed -i -e "s/0.0.0/$CI_COMMIT_REF_NAME/g" include/version.h
+  - make linux_x64_86 -j$(nproc)
+  - mv build/captidom-client captidom-client-linux_x64_86
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - captidom-client-linux_x64_86
+      - client-config.ini
+  only:
+    - tags
+  tags: [docker]
+
+
+build:raspberry-pi4B:
+  stage: build
+  image: $BASE_IMAGE
+  script:
+  - make -v
+  - sed -i -e "s/0.0.0/$CI_COMMIT_REF_NAME/g" include/version.h
+  - make raspberry-pi4B-cross -j$(nproc)
+  - mv build/captidom-client captidom-client-raspberry-pi4B
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - captidom-client-raspberry-pi4B
+      - client-config.ini
+  only:
+    - tags
+  tags: [docker]
+
+
+build:raspberry-pi3B:
+  stage: build
+  image: $BASE_IMAGE
+  script:
+  - make -v
+  - sed -i -e "s/0.0.0/$CI_COMMIT_REF_NAME/g" include/version.h
+  - make raspberry-pi3B-cross -j$(nproc)
+  - mv build/captidom-client captidom-client-raspberry-pi3B
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - captidom-client-raspberry-pi3B
+      - client-config.ini
+  only:
+    - tags
+  tags: [docker]
+
+  
+build:raspberry-pi2B:
+  stage: build
+  image: $BASE_IMAGE
+  script:
+  - make -v
+  - sed -i -e "s/0.0.0/$CI_COMMIT_REF_NAME/g" include/version.h
+  - make raspberry-pi2B-cross -j$(nproc)
+  - mv build/captidom-client captidom-client-raspberry-pi2B
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - captidom-client-raspberry-pi2B
+      - client-config.ini
+  only:
+    - tags
+  tags: [docker]
+
+
+deploy:linux_x64_86:
+  stage: deploy
+  image: $BASE_IMAGE
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo -n "$DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - mkdir -p $CI_COMMIT_REF_NAME/linux_x64_86/
+    - mv captidom-client-linux_x64_86 $CI_COMMIT_REF_NAME/linux_x64_86/captidom-client
+    - scp -r $CI_COMMIT_REF_NAME $DEPLOY_PATH
+    - touch .notify
+    - scp .notify $DEPLOY_PATH
+  only:
+    - tags
+  dependencies:
+    - build:linux_x64_86
+  tags: [docker]
+
+
+deploy:raspberry-pi3B:
+  stage: deploy
+  image: $BASE_IMAGE
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo -n "$DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - mkdir -p $CI_COMMIT_REF_NAME/RPI_3B/
+    - mv captidom-client-raspberry-pi3B $CI_COMMIT_REF_NAME/RPI_3B/captidom-client
+    - scp -r $CI_COMMIT_REF_NAME $DEPLOY_PATH
+    - touch .notify
+    - scp .notify $DEPLOY_PATH
+  only:
+    - tags
+  dependencies:
+    - build:raspberry-pi3B
+  tags: [docker]
+
+
+deploy:raspberry-pi2B:
+  stage: deploy
+  image: $BASE_IMAGE
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo -n "$DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - mkdir -p $CI_COMMIT_REF_NAME/RPI_2B/
+    - mv captidom-client-raspberry-pi2B $CI_COMMIT_REF_NAME/RPI_2B/captidom-client
+    - scp -r $CI_COMMIT_REF_NAME $DEPLOY_PATH
+    - touch .notify
+    - scp .notify $DEPLOY_PATH
+  only:
+    - tags
+  dependencies:
+    - build:raspberry-pi2B
+  tags: [docker]
+
+deploy:raspberry-pi4B:
+  stage: deploy
+  image: $BASE_IMAGE
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo -n "$DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - mkdir -p $CI_COMMIT_REF_NAME/RPI_4B/
+    - mv captidom-client-raspberry-pi4B $CI_COMMIT_REF_NAME/RPI_4B/captidom-client
+    - scp -r $CI_COMMIT_REF_NAME $DEPLOY_PATH
+    - touch .notify
+    - scp .notify $DEPLOY_PATH
+  only:
+    - tags
+  dependencies:
+    - build:raspberry-pi4B
+  tags: [docker]
+

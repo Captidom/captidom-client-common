@@ -1,0 +1,21 @@
+[submodule "external/paho.mqtt.c"]
+	path = external/paho.mqtt.c
+	url = https://github.com/eclipse/paho.mqtt.c.git
+[submodule "external/rapidjson"]
+	path = external/rapidjson
+	url = https://github.com/Tencent/rapidjson.git
+[submodule "external/WiringPi"]
+	path = external/WiringPi
+	url = https://github.com/WiringPi/WiringPi.git
+[submodule "external/nut"]
+	path = external/nut
+	url = https://github.com/networkupstools/nut.git
+[submodule "external/simpleini"]
+	path = external/simpleini
+	url = https://github.com/brofield/simpleini.git
+[submodule "external/curlpp"]
+	path = external/curlpp
+	url = https://github.com/jpbarrette/curlpp.git
+[submodule "external/curl"]
+	path = external/curl
+	url = https://github.com/curl/curl.git

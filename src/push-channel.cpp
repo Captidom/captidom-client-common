@@ -1,0 +1,11 @@
+#include "push-channel.h"
+
+
+namespace captidom
+{
+    const ChannelMode modes[] = {ChannelMode::CHANNEL_MODE_PUSH};
+    PushChannel::PushChannel(ChannelValueCallback *newValueCB, int id, char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes) : Channel(id, name, nameLength, supportedTypes, maxTypes, modes, 1)
+    {
+        this->newValueCB = newValueCB;
+    }
+}
