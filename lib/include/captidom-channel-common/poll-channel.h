@@ -11,8 +11,15 @@
 namespace captidom
 {
 
+    class IPollChannel
+    {
+    public:
+        virtual void setConfig(PollChannelConfig *config) = 0;
+        virtual const PollChannelConfig getConfig() = 0;
+    };
+
     template<class T_DATA_TYPE>
-    class PollChannel : public InputChannel<T_DATA_TYPE>
+    class PollChannel : public InputChannel<T_DATA_TYPE>, public IPollChannel
     {
     private:
         int pollIntervalSeconds = 0;
