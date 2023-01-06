@@ -33,18 +33,37 @@ namespace captidom
         this->supportedTypes->getItems(supportedTypes, maxTypes);
     }
 
+    bool Channel::supportsType(ChannelType type)
+    {
+        const ChannelType *types;
+        int numTypes;
+        this->getSupportedTypes(&types, numTypes);
+
+        for (int i = 0; i < numTypes; i++)
+        {
+            if (types[i] == type)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void Channel::getSupportedModes(const ChannelMode **supportedModes, int &maxModes)
     {
         this->supportedModes->getItems(supportedModes, maxModes);
     }
 
-    void Channel::setConfig(const ChannelConfig *config) {
+    void Channel::setConfig(const ChannelConfig *config)
+    {
         this->config = *config;
 
         this->applyConfig(config);
     }
 
-    const ChannelConfig * Channel::getConfig() {
+    const ChannelConfig *Channel::getConfig()
+    {
         return &this->config;
     }
 }
