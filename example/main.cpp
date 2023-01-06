@@ -32,7 +32,7 @@ public:
         }
 
         char buffer[16];
-        sprintf(buffer, "%d", this->currentCount);
+        sprintf(buffer, "%d", *rawValue);
         *serializedValue = new captidom::List<char>(buffer, strlen(buffer));
     }
 };
