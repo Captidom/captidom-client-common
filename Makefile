@@ -1,5 +1,6 @@
 IDIR=include
 SRC_DIR=src
+EXAMPLE_DIR=example
 LDIR=../lib
 OBJ_DIR=build/obj
 BINDIR=build
@@ -21,7 +22,8 @@ LIBS = -Wl,-Bstatic $(STATIC_LIBS) -Wl,-Bdynamic $(SHARED_LIBS)
 LDFLAGS=
 
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
-OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES)) $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
 
 ARCH=
 ARCH_ARMHF=arm-linux-gnueabihf
@@ -31,6 +33,11 @@ CMAKE_TOOLCHAIN=
 CONFIGURE_ARCH=
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	CFLAGS="$(DEPENDENCY_CFLAGS)" \
+	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(CFLAGS)
