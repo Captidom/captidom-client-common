@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 
-#include "input-channel.h"
+#include "push-channel.h"
 #include "poll-channel-config.h"
 #include "channel-value-callback.h"
 
@@ -17,7 +17,10 @@ namespace captidom
     private:
         int pollIntervalSeconds = 0;
     public:
+        PollChannel(ChannelValueCallback *newValueCB, int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes);
+
         void setConfig(PollChannelConfig *config);
+        const PollChannelConfig getConfig();
     };
 }
 

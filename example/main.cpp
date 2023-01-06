@@ -1,36 +1,38 @@
 #include <stdlib.h>
 
 #include "captidom-channel-common/list.h"
-#include "captidom-channel-common/input-channel.hpp"
+#include "captidom-channel-common/poll-channel.hpp"
 
-namespace {
+namespace
+{
     const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT};
-    const captidom::ChannelMode modes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-class SimpleCountPollChannel : public captidom::InputChannel<int>
+class SimpleCountPollChannel : public captidom::PollChannel<int>
 {
 private:
     int currentCount;
 
 public:
-
-
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : InputChannel<int>(id, name, nameLength, types, 1, modes, 1)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(nullptr, id, name, nameLength, types, 1)
     {
         this->currentCount = currentCount;
     };
 
-    void produceValue(int **newValue) {
-        if (*newValue) {
+    void produceValue(int **newValue)
+    {
+        if (*newValue)
+        {
             delete *newValue;
         }
 
         *newValue = new int(this->currentCount++);
     }
 
-    void serializeValue(int *rawValue, captidom::List<char> **serializedValue) {
-        if (*serializedValue) {
+    void serializeValue(int *rawValue, captidom::List<char> **serializedValue)
+    {
+        if (*serializedValue)
+        {
             delete *serializedValue;
         }
 
@@ -60,30 +62,34 @@ int main(int argc, char *argv[])
     ch.getSupportedTypes(&types, typesLen);
     printf("Types: %d (%d)\n", typesLen, types[0]);
 
-    captidom::ChannelConfig originalConfig = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelMode::CHANNEL_MODE_POLL};
+    captidom::PollChannelConfig originalConfig = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelMode::CHANNEL_MODE_POLL};
 
     ch.setConfig(&originalConfig);
 
-    const captidom::ChannelConfig *config = ch.getConfig();
+    {
+        const captidom::PollChannelConfig config = ch.getConfig();
 
-    printf("Configured type: %d; mode %d\n", config->type, config->mode);
+        printf("Configured type: %d; mode %d\n", config.type, config.mode);
+    }
 
     originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE;
     originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_PUSH;
 
     ch.setConfig(&originalConfig);
-    config = ch.getConfig();
+    {
+        const captidom::PollChannelConfig config = ch.getConfig();
 
-    printf("Reconfigured type: %d; mode %d\n", config->type, config->mode);
-
+        printf("Reconfigured type: %d; mode %d\n", config.type, config.mode);
+    }
 
     originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_NONE;
     originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_NONE;
 
     ch.setConfig(&originalConfig);
-    config = ch.getConfig();
+    {
+        const captidom::PollChannelConfig config = ch.getConfig();
 
-    printf("Disabled type: %d; mode %d\n", config->type, config->mode);
-
+        printf("Disabled type: %d; mode %d\n", config.type, config.mode);
+    }
     return 0;
 }

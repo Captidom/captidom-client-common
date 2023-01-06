@@ -17,7 +17,7 @@ namespace captidom
         ChannelValueCallback *newValueCB = 0;
 
     public:
-        PushChannel(ChannelValueCallback *newValueCB, int id, char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes);
+        PushChannel(ChannelValueCallback *newValueCB, int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes);
         ~PushChannel(){};
     };
 }

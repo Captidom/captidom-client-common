@@ -1,10 +1,13 @@
 #pragma once
 
-#include "channel-config.h"
+#include "channel-type.h"
+#include "channel-mode.h"
 
 namespace captidom {
 
-    struct PollChannelConfig : ChannelConfig {
+    struct PollChannelConfig {
+        ChannelType type;
+        ChannelMode mode;
         int pollIntervalSeconds;
     };
 }
