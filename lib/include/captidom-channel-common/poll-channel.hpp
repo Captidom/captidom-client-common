@@ -5,7 +5,7 @@
 namespace captidom
 {
     template <class T_DATA_TYPE>
-    PollChannel<T_DATA_TYPE>::PollChannel(ChannelValueCallback *newValueCB, int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes) : PushChannel<T_DATA_TYPE>(newValueCB, id, name, nameLength, supportedTypes, maxTypes){};
+    PollChannel<T_DATA_TYPE>::PollChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes) : InputChannel<T_DATA_TYPE>(newValueCB, id, name, nameLength, supportedTypes, maxTypes){};
 
     template <class T_DATA_TYPE>
     void PollChannel<T_DATA_TYPE>::setConfig(PollChannelConfig *config)
