@@ -5,7 +5,7 @@
 
 namespace
 {
-    const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT};
+    const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE};
 }
 
 class SimpleCountPollChannel : public captidom::PollChannel<int>
@@ -14,7 +14,7 @@ private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(id, name, nameLength, types, 1)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(id, name, nameLength, types, 2)
     {
         this->currentCount = currentCount;
     };
