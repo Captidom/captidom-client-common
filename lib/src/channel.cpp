@@ -37,4 +37,14 @@ namespace captidom
     {
         this->supportedModes->getItems(supportedModes, maxModes);
     }
+
+    void Channel::setConfig(const ChannelConfig *config) {
+        this->config = *config;
+
+        this->applyConfig(config);
+    }
+
+    const ChannelConfig * Channel::getConfig() {
+        return &this->config;
+    }
 }

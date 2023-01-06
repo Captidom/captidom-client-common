@@ -20,6 +20,14 @@ namespace captidom
         List<ChannelType> *supportedTypes;
         List<ChannelMode> *supportedModes;
 
+        ChannelConfig config = {
+            ChannelType::CHANNEL_TYPE_NONE,
+            ChannelMode::CHANNEL_MODE_NONE,
+        };
+
+    protected:
+        virtual void applyConfig(const ChannelConfig *config){};
+
     public:
         Channel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes);
 
@@ -32,5 +40,8 @@ namespace captidom
         void getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes);
         void getSupportedModes(const ChannelMode **supportedModes, int &maxModes);
 
+        void setConfig(const ChannelConfig *config);
+
+        const ChannelConfig *getConfig();
     };
 }

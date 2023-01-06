@@ -60,5 +60,30 @@ int main(int argc, char *argv[])
     ch.getSupportedTypes(&types, typesLen);
     printf("Types: %d (%d)\n", typesLen, types[0]);
 
+    captidom::ChannelConfig originalConfig = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelMode::CHANNEL_MODE_POLL};
+
+    ch.setConfig(&originalConfig);
+
+    const captidom::ChannelConfig *config = ch.getConfig();
+
+    printf("Configured type: %d; mode %d\n", config->type, config->mode);
+
+    originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE;
+    originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_PUSH;
+
+    ch.setConfig(&originalConfig);
+    config = ch.getConfig();
+
+    printf("Reconfigured type: %d; mode %d\n", config->type, config->mode);
+
+
+    originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_NONE;
+    originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_NONE;
+
+    ch.setConfig(&originalConfig);
+    config = ch.getConfig();
+
+    printf("Disabled type: %d; mode %d\n", config->type, config->mode);
+
     return 0;
 }
