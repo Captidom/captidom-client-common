@@ -4,12 +4,13 @@
 #include <chrono>
 #include <thread>
 
-#include "channel.h"
+#include "input-channel.h"
 
 namespace captidom
 {
 
-    class OutputChannel : public Channel
+    template<class T_DATA_TYPE>
+    class OutputChannel : public InputChannel<T_DATA_TYPE>
     {
     public:
         virtual void setValue(const char *strValue, int strValueLen) = 0;

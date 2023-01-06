@@ -4,12 +4,14 @@
 #include <chrono>
 #include <thread>
 
-#include "channel.h"
+#include "input-channel.h"
+#include "channel-value-callback.h"
 
 namespace captidom
 {
 
-    class PushChannel : public Channel
+    template<class T_DATA_TYPE>
+    class PushChannel : public InputChannel<T_DATA_TYPE>
     {
     protected:
         ChannelValueCallback *newValueCB = 0;
@@ -19,3 +21,5 @@ namespace captidom
         ~PushChannel(){};
     };
 }
+
+#include "push-channel.hpp"

@@ -7,7 +7,6 @@
 
 #include "list.h"
 #include "channel-config.h"
-#include "channel-value-callback.h"
 
 namespace captidom
 {
@@ -32,5 +31,6 @@ namespace captidom
 
         void getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes);
         void getSupportedModes(const ChannelMode **supportedModes, int &maxModes);
+
     };
 }

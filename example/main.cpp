@@ -1,35 +1,43 @@
 #include <stdlib.h>
 
 #include "captidom-channel-common/list.h"
-#include "captidom-channel-common/poll-channel.h"
+#include "captidom-channel-common/input-channel.hpp"
 
 namespace {
-    static const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT};
+    const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT};
+    const captidom::ChannelMode modes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-class SimpleCountPollChannel : public captidom::PollChannel
+class SimpleCountPollChannel : public captidom::InputChannel<int>
 {
 private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel(id, name, nameLength, types, 1)
+
+
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : InputChannel<int>(id, name, nameLength, types, 1, modes, 1)
     {
         this->currentCount = currentCount;
     };
 
-    void getValue(const char **strValue, int &strValueLen)
-    {
+    void produceValue(int **newValue) {
+        if (*newValue) {
+            delete *newValue;
+        }
+
+        *newValue = new int(this->currentCount++);
+    }
+
+    void serializeValue(int *rawValue, captidom::List<char> **serializedValue) {
+        if (*serializedValue) {
+            delete *serializedValue;
+        }
+
         char buffer[16];
         sprintf(buffer, "%d", this->currentCount);
-
-        delete this->value;
-        this->value = new captidom::List<char>(buffer, strlen(buffer));
-
-        PollChannel::getValue(strValue, strValueLen);
-
-        this->currentCount++;
-    };
+        *serializedValue = new captidom::List<char>(buffer, strlen(buffer));
+    }
 };
 
 int main(int argc, char *argv[])
