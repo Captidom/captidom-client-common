@@ -55,11 +55,19 @@ namespace captidom
         this->supportedModes->getItems(supportedModes, maxModes);
     }
 
-    void Channel::setConfig(const ChannelConfig *config)
+    bool Channel::setConfig(const ChannelConfig *config)
     {
+
+        if (!this->supportsType(config->type))
+        {
+            return false;
+        }
+
         this->config = *config;
 
         this->applyConfig(config);
+
+        return true;
     }
 
     const ChannelConfig *Channel::getConfig()

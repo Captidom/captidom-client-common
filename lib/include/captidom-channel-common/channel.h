@@ -38,10 +38,10 @@ namespace captidom
         int getId();
 
         void getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes);
-        bool supportsType(ChannelType supportedTypes);
+        bool supportsType(ChannelType type);
         void getSupportedModes(const ChannelMode **supportedModes, int &maxModes);
 
-        void setConfig(const ChannelConfig *config);
+        bool setConfig(const ChannelConfig *config);
 
         const ChannelConfig *getConfig();
     };
