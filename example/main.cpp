@@ -14,7 +14,7 @@ private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(nullptr, id, name, nameLength, types, 1)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(id, name, nameLength, types, 1)
     {
         this->currentCount = currentCount;
     };
