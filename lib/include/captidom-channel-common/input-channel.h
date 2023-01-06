@@ -19,7 +19,7 @@ namespace captidom
         T_DATA_TYPE *rawValue = 0;
         List<char> *serializedValue = 0;
 
-        virtual void produceValue(T_DATA_TYPE **rawValue) = 0;
+        virtual void produceValue(T_DATA_TYPE *rawValue) = 0;
         virtual void serializeValue(T_DATA_TYPE *rawValue, List<char> **serializedValue) = 0;
 
     public:

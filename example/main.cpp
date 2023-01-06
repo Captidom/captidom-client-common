@@ -19,14 +19,9 @@ public:
         this->currentCount = currentCount;
     };
 
-    void produceValue(int **newValue)
+    void produceValue(int *newValue)
     {
-        if (*newValue)
-        {
-            delete *newValue;
-        }
-
-        *newValue = new int(this->currentCount++);
+        *newValue = this->currentCount++;
     }
 
     void serializeValue(int *rawValue, captidom::List<char> **serializedValue)

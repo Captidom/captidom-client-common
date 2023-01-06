@@ -19,7 +19,11 @@ namespace captidom
     template <class T_DATA_TYPE>
     void InputChannel<T_DATA_TYPE>::_produceAndSerializeValue()
     {
-        this->produceValue(&this->rawValue);
+        if (this->rawValue) {
+            delete this->rawValue;
+        }
+        this->rawValue = new T_DATA_TYPE();
+        this->produceValue(this->rawValue);
         this->serializeValue(this->rawValue, &this->serializedValue);
     }
 
