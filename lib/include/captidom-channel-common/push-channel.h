@@ -20,5 +20,3 @@ namespace captidom
         ~PushChannel(){};
     };
 }
-
-#include "push-channel.hpp"

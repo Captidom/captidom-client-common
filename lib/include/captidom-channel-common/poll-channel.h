@@ -21,5 +21,3 @@ namespace captidom
         void setPollingInterval(int pollInterval);
     };
 }
-
-#include "poll-channel.hpp"

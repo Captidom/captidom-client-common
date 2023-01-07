@@ -1,5 +1,3 @@
-#pragma once
-
 #include "poll-channel.h"
 
 namespace captidom

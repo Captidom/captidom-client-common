@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "captidom-channel-common/list.h"
-#include "captidom-channel-common/poll-channel.hpp"
+#include "captidom-channel-common/poll-channel.h"
 
 namespace
 {

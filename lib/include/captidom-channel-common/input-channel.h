@@ -20,5 +20,3 @@ namespace captidom
         const char * getValue();
     };
 }
-
-#include "input-channel.hpp"

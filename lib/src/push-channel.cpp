@@ -1,5 +1,3 @@
-#pragma once
-
 #include "push-channel.h"
 
 namespace captidom
