@@ -18,7 +18,7 @@ namespace captidom
 
     public:
         PollChannel();
-        void setPollingInterval(int pollInterval);
+        virtual void setPollingInterval(int pollInterval);
         int getPollingInterval();
     };
 }
