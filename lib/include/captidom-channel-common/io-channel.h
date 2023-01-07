@@ -9,7 +9,7 @@
 namespace captidom
 {
 
-    class IOutputChannel : virtual public InputChannel
+    class IOChannel : virtual public InputChannel
     {
     public:
         virtual void setValue(const char *strValue, int strValueLen) = 0;
