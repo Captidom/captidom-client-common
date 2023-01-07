@@ -17,6 +17,6 @@ namespace captidom
 
     public:
         InputChannel() {};
-        const char * getValue();
+        virtual const char * getValue();
     };
 }

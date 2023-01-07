@@ -18,5 +18,7 @@ namespace captidom
     public:
         PushChannel(ChannelValueCallback *newValueCB);
         ~PushChannel();
+
+        const char * getValue() override;
     };
 }

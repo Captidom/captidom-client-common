@@ -10,4 +10,18 @@ namespace captidom
     PushChannel::~PushChannel() {
         delete this->newValueCB;
     }
+
+    const char * PushChannel::getValue() {
+        char buffer[64];
+        this->produceValue(buffer);
+        bool hasNewValue = strcmp(buffer, this->serializedValue);
+
+        strcpy(this->serializedValue, buffer);
+
+        if (hasNewValue && this->newValueCB->callback) {
+            this->newValueCB->callback(this->newValueCB->context, this->serializedValue, this);
+        }
+
+        return this->serializedValue;
+    }
 }
