@@ -10,8 +10,7 @@
 namespace captidom
 {
 
-    template<class T_DATA_TYPE>
-    class PushChannel : public InputChannel<T_DATA_TYPE>
+    class PushChannel : public InputChannel
     {
     protected:
         ChannelValueCallback *newValueCB = 0;

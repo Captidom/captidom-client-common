@@ -8,31 +8,21 @@ namespace
     const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE};
 }
 
-class SimpleCountPollChannel : public captidom::PollChannel<int>
+class SimpleCountPollChannel : public captidom::PollChannel
 {
 private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel<int>(id, name, nameLength, types, 2)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel(id, name, nameLength, types, 2)
     {
         this->currentCount = currentCount;
     };
 
-    void produceValue(int *newValue)
+    void produceValue(captidom::List<char> **serializedValue)
     {
-        *newValue = this->currentCount++;
-    }
-
-    void serializeValue(int *rawValue, captidom::List<char> **serializedValue)
-    {
-        if (*serializedValue)
-        {
-            delete *serializedValue;
-        }
-
         char buffer[16];
-        sprintf(buffer, "%d", this->currentCount);
+        sprintf(buffer, "%d", this->currentCount++);
         *serializedValue = new captidom::List<char>(buffer, strlen(buffer));
     }
 };

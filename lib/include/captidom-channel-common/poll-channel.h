@@ -11,8 +11,7 @@
 namespace captidom
 {
 
-    template<class T_DATA_TYPE>
-    class PollChannel : public InputChannel<T_DATA_TYPE>
+    class PollChannel : public InputChannel
     {
     private:
         int pollIntervalSeconds = 0;

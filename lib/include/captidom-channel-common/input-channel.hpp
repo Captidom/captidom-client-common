@@ -4,33 +4,19 @@
 
 namespace captidom
 {
-    template <class T_DATA_TYPE>
-    InputChannel<T_DATA_TYPE>::InputChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes) : Channel(id, name, nameLength, supportedTypes, maxTypes, supportedModes, maxModes)
+    InputChannel::InputChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes) : Channel(id, name, nameLength, supportedTypes, maxTypes, supportedModes, maxModes)
     {
         this->serializedValue = new List<char>("", 0);
     }
 
-    template <class T_DATA_TYPE>
-    InputChannel<T_DATA_TYPE>::~InputChannel()
+    InputChannel::~InputChannel()
     {
         delete this->serializedValue;
     }
 
-    template <class T_DATA_TYPE>
-    void InputChannel<T_DATA_TYPE>::_produceAndSerializeValue()
+    void InputChannel::getValue(const char **value, int &valueLen)
     {
-        if (this->rawValue) {
-            delete this->rawValue;
-        }
-        this->rawValue = new T_DATA_TYPE();
-        this->produceValue(this->rawValue);
-        this->serializeValue(this->rawValue, &this->serializedValue);
-    }
-
-    template <class T_DATA_TYPE>
-    void InputChannel<T_DATA_TYPE>::getValue(const char **value, int &valueLen)
-    {
-        this->_produceAndSerializeValue();
+        this->produceValue(&this->serializedValue);
         this->serializedValue->getItems(value, valueLen);
     }
 }
