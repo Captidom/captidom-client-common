@@ -1,5 +1,6 @@
 #pragma once
 
+#include "channel.h"
 
 namespace captidom {
 
