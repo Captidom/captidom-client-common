@@ -2,5 +2,9 @@
 
 
 namespace captidom {
-    typedef void (ChannelValueCallback)(const char *, Channel *);
+
+    struct ChannelValueCallback {
+        void *context;
+        void (callback)(void * context, const char *, Channel *);
+    };
 }
