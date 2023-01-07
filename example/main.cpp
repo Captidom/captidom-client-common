@@ -19,15 +19,9 @@ public:
         this->currentCount = currentCount;
     };
 
-    void produceValue(captidom::List<char> **serializedValue)
+    void produceValue(char * value)
     {
-        if (*serializedValue) {
-            delete *serializedValue;
-            *serializedValue = 0;
-        }
-        char buffer[16];
-        sprintf(buffer, "%d", this->currentCount++);
-        *serializedValue = new captidom::List<char>(buffer, strlen(buffer));
+        sprintf(value, "%d", this->currentCount++);
     }
 };
 
@@ -37,14 +31,12 @@ int main(int argc, char *argv[])
 
     const char *buffer;
     int nameLen;
+
     ch.getName(&buffer, nameLen);
     printf("Name: %s\n", buffer);
-    ch.getValue(&buffer, nameLen);
-    printf("Value: %s\n", buffer);
-    ch.getValue(&buffer, nameLen);
-    printf("Value: %s\n", buffer);
-    ch.getValue(&buffer, nameLen);
-    printf("Value: %s\n", buffer);
+    printf("Value: %s\n", ch.getValue());
+    printf("Value: %s\n", ch.getValue());
+    printf("Value: %s\n", ch.getValue());
 
     const captidom::ChannelType *types;
     int typesLen;
