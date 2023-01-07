@@ -17,7 +17,7 @@ namespace captidom
         int pollIntervalSeconds = 0;
 
     public:
-        PollChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes);
+        PollChannel();
         void setPollingInterval(int pollInterval);
     };
 }
