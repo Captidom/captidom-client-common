@@ -5,7 +5,13 @@ namespace captidom
     PushChannel::PushChannel(ChannelValueCallback *newValueCB)
     {
         this->newValueCB = new ChannelValueCallback();
-        *this->newValueCB = *newValueCB;
+        if (newValueCB) {
+            *this->newValueCB = *newValueCB;
+        }
+    }
+    PushChannel::PushChannel()
+    {
+        this->newValueCB = new ChannelValueCallback();
     }
     PushChannel::~PushChannel() {
         delete this->newValueCB;

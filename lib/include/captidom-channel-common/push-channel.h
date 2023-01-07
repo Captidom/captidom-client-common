@@ -16,6 +16,7 @@ namespace captidom
         ChannelValueCallback *newValueCB = 0;
 
     public:
+        PushChannel();
         PushChannel(ChannelValueCallback *newValueCB);
         ~PushChannel();
 
