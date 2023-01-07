@@ -10,7 +10,7 @@
 namespace captidom
 {
 
-    class PushChannel : public InputChannel
+    class PushChannel : virtual public InputChannel
     {
     protected:
         ChannelValueCallback *newValueCB = 0;

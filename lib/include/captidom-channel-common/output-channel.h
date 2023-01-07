@@ -9,8 +9,7 @@
 namespace captidom
 {
 
-    template<class T_DATA_TYPE>
-    class OutputChannel : public InputChannel<T_DATA_TYPE>
+    class IOutputChannel : virtual public InputChannel
     {
     public:
         virtual void setValue(const char *strValue, int strValueLen) = 0;

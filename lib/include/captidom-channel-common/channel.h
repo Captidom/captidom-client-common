@@ -26,7 +26,7 @@ namespace captidom
         };
 
     protected:
-        virtual void applyConfig(const ChannelConfig *config){};
+        virtual void applyConfig(const ChannelConfig *config) = 0;
 
     public:
         Channel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes);

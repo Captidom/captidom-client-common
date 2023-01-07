@@ -6,20 +6,26 @@
 namespace
 {
     const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE};
+    const captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-class SimpleCountPollChannel : public captidom::PollChannel
+class SimpleCountPollChannel : virtual public captidom::PollChannel
 {
+protected:
+    void applyConfig(const captidom::ChannelConfig *config)
+    {
+    }
+
 private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : PollChannel(id, name, nameLength, types, 2)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : Channel(id, name, nameLength, types, 2, pollModes, 1), PollChannel(id, name, nameLength, types, 2)
     {
         this->currentCount = currentCount;
     };
 
-    void produceValue(char * value)
+    void produceValue(char *value)
     {
         sprintf(value, "%d", this->currentCount++);
     }

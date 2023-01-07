@@ -8,8 +8,7 @@
 
 namespace captidom
 {
-
-    class InputChannel : public Channel
+    class InputChannel : virtual public Channel
     {
     protected:
         char serializedValue[64];
@@ -17,8 +16,7 @@ namespace captidom
         virtual void produceValue(char *serializedValue) = 0;
 
     public:
-        InputChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedmodes, int maxModes);
-
+        InputChannel() {};
         const char * getValue();
     };
 }
