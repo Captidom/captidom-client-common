@@ -21,6 +21,10 @@ public:
 
     void produceValue(captidom::List<char> **serializedValue)
     {
+        if (*serializedValue) {
+            delete *serializedValue;
+            *serializedValue = 0;
+        }
         char buffer[16];
         sprintf(buffer, "%d", this->currentCount++);
         *serializedValue = new captidom::List<char>(buffer, strlen(buffer));
