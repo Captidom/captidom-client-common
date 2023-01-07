@@ -7,4 +7,7 @@ namespace captidom
     void PollChannel::setPollingInterval(int pollInterval) {
         this->pollIntervalSeconds = pollInterval;
     }
+    int PollChannel::getPollingInterval() {
+        return this->pollIntervalSeconds;
+    }
 }
