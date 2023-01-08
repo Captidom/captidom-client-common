@@ -5,7 +5,6 @@
 #include <thread>
 
 #include "push-channel.h"
-#include "poll-channel-config.h"
 #include "channel-value-callback.h"
 
 namespace captidom
