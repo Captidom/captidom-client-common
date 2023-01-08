@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "captidom-channel-common/list.h"
-#include "captidom-channel-common/poll-channel.h"
+#include "captidom-channel-common/universal-channel.h"
 
 namespace
 {
@@ -9,10 +9,14 @@ namespace
     const captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-class SimpleCountPollChannel : virtual public captidom::PollChannel
+class SimpleCountPollChannel : virtual public captidom::UniversalChannel
 {
 protected:
     void applyConfig(const captidom::ChannelConfig *config)
+    {
+    }
+
+    void setValue(const char *newValue, int newValueLength)
     {
     }
 

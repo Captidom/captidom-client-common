@@ -12,6 +12,7 @@ namespace captidom
     class IOChannel : virtual public InputChannel
     {
     public:
+        IOChannel() {};
         virtual void setValue(const char *strValue, int strValueLen) = 0;
     };
 }
