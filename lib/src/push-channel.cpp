@@ -9,10 +9,7 @@ namespace captidom
             *this->newValueCB = *newValueCB;
         }
     }
-    PushChannel::PushChannel()
-    {
-        this->newValueCB = new ChannelValueCallback();
-    }
+
     PushChannel::~PushChannel() {
         delete this->newValueCB;
     }
