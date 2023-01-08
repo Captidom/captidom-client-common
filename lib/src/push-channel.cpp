@@ -22,7 +22,7 @@ namespace captidom
         strcpy(this->serializedValue, buffer);
 
         if (hasNewValue && this->newValueCB->callback) {
-            this->newValueCB->callback(this->newValueCB->context, this->serializedValue, this);
+            this->newValueCB->callback(this->newValueCB->context, this->serializedValue, this->getId());
         }
 
         return this->serializedValue;

@@ -6,7 +6,7 @@ namespace captidom {
 
     struct ChannelValueCallback {
         void *context;
-        void (*callback)(void * context, const char *, BaseChannel *);
+        void (*callback)(void * context, const char *, int channelId);
     };
 
     static captidom::ChannelValueCallback EMPTY_CHANNEL_VALUE_CALLBACK = {0, 0};
