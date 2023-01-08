@@ -4,11 +4,11 @@
 #include <chrono>
 #include <thread>
 
-#include "channel.h"
+#include "base-channel.h"
 
 namespace captidom
 {
-    class InputChannel : virtual public Channel
+    class InputChannel : virtual public BaseChannel
     {
     protected:
         char serializedValue[64];

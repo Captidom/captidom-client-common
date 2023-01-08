@@ -1,8 +1,8 @@
-#include "channel.h"
+#include "base-channel.h"
 
 namespace captidom
 {
-    Channel::Channel(int id, const char *name, int nameLength, const ChannelType supportedTypes[], int numTypes, const ChannelMode supportedModes[], int numModes)
+    BaseChannel::BaseChannel(int id, const char *name, int nameLength, const ChannelType supportedTypes[], int numTypes, const ChannelMode supportedModes[], int numModes)
     {
         this->id = id;
 
@@ -11,29 +11,29 @@ namespace captidom
         this->supportedModes = new List<ChannelMode>(supportedModes, numModes);
     }
 
-    Channel::~Channel()
+    BaseChannel::~BaseChannel()
     {
         delete this->supportedModes;
         delete this->supportedTypes;
         delete this->name;
     }
 
-    int Channel::getId()
+    int BaseChannel::getId()
     {
         return this->id;
     }
 
-    void Channel::getName(const char **destination, int &length)
+    void BaseChannel::getName(const char **destination, int &length)
     {
         this->name->getItems(destination, length);
     }
 
-    void Channel::getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes)
+    void BaseChannel::getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes)
     {
         this->supportedTypes->getItems(supportedTypes, maxTypes);
     }
 
-    bool Channel::supportsType(ChannelType type)
+    bool BaseChannel::supportsType(ChannelType type)
     {
         const ChannelType *types;
         int numTypes;
@@ -50,12 +50,12 @@ namespace captidom
         return false;
     }
 
-    void Channel::getSupportedModes(const ChannelMode **supportedModes, int &maxModes)
+    void BaseChannel::getSupportedModes(const ChannelMode **supportedModes, int &maxModes)
     {
         this->supportedModes->getItems(supportedModes, maxModes);
     }
 
-    bool Channel::supportsMode(ChannelMode mode)
+    bool BaseChannel::supportsMode(ChannelMode mode)
     {
         const ChannelMode *modes;
         int numModes;
@@ -72,7 +72,7 @@ namespace captidom
         return false;
     }
 
-    bool Channel::setConfig(const ChannelConfig *config)
+    bool BaseChannel::setConfig(const ChannelConfig *config)
     {
 
         if (!this->supportsType(config->type) || !this->supportsMode(config->mode))
@@ -87,7 +87,7 @@ namespace captidom
         return true;
     }
 
-    const ChannelConfig *Channel::getConfig()
+    const ChannelConfig *BaseChannel::getConfig()
     {
         return &this->config;
     }

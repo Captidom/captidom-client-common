@@ -11,7 +11,7 @@
 namespace captidom
 {
 
-    class Channel
+    class BaseChannel
     {
     private:
         int id;
@@ -29,9 +29,9 @@ namespace captidom
         virtual void applyConfig(const ChannelConfig *config) = 0;
 
     public:
-        Channel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes);
+        BaseChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes);
 
-        ~Channel();
+        ~BaseChannel();
 
         void getName(const char **destination, int &length);
 

@@ -20,7 +20,7 @@ private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : Channel(id, name, nameLength, types, 2, pollModes, 1), PushChannel(&captidom::EMPTY_CHANNEL_VALUE_CALLBACK)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : BaseChannel(id, name, nameLength, types, 2, pollModes, 1), PushChannel(&captidom::EMPTY_CHANNEL_VALUE_CALLBACK)
     {
         this->currentCount = currentCount;
     };
