@@ -75,9 +75,16 @@ namespace captidom
     bool BaseChannel::setConfig(const ChannelConfig *config)
     {
 
+        const ChannelConfig *currentConfig = this->getConfig();
+
         if (!this->supportsType(config->type) || !this->supportsMode(config->mode))
         {
             return false;
+        }
+
+        if (*currentConfig == *config)
+        {
+            return true;
         }
 
         this->config = *config;
