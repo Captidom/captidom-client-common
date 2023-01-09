@@ -35,6 +35,12 @@ namespace captidom
 
     bool BaseChannel::supportsType(ChannelType type)
     {
+
+        if (ChannelType::CHANNEL_TYPE_NONE == type)
+        {
+            return true;
+        }
+
         const ChannelType *types;
         int numTypes;
         this->getSupportedTypes(&types, numTypes);
@@ -57,6 +63,12 @@ namespace captidom
 
     bool BaseChannel::supportsMode(ChannelMode mode)
     {
+
+        if (ChannelMode::CHANNEL_MODE_NONE == mode)
+        {
+            return true;
+        }
+
         const ChannelMode *modes;
         int numModes;
         this->getSupportedModes(&modes, numModes);
