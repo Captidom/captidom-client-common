@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
 #include "captidom-channel-common/list.h"
-#include "captidom-channel-common/universal-channel.h"
+#include "captidom-channel-common/unprovisioned-channel.h"
+#include "captidom-channel-common/poll-channel.h"
 
 namespace
 {
@@ -9,22 +10,15 @@ namespace
     const captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-class SimpleCountPollChannel : virtual public captidom::UniversalChannel
+captidom::UnprovisionedChannel *unprovisionedCountChannel = new captidom::UnprovisionedChannel(0, "test", 4, types, 2, pollModes, 1);
+
+class SimpleCountPollChannel : virtual public captidom::PollChannel
 {
-protected:
-    void applyConfig(const captidom::ChannelConfig *config)
-    {
-    }
-
-    void setValue(const char *newValue, int newValueLength)
-    {
-    }
-
 private:
     int currentCount;
 
 public:
-    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : BaseChannel(id, name, nameLength, types, 2, pollModes, 1), PushChannel(&captidom::EMPTY_CHANNEL_VALUE_CALLBACK)
+    SimpleCountPollChannel(int currentCount, int id, const char *name, int nameLength) : BaseChannel(id, name, nameLength)
     {
         this->currentCount = currentCount;
     };
@@ -32,6 +26,14 @@ public:
     void produceValue(char *value)
     {
         sprintf(value, "%d", this->currentCount++);
+    }
+
+    captidom::ChannelType getType() {
+        return captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT;
+    }
+
+    captidom::ChannelMode getMode() {
+        return captidom::ChannelMode::CHANNEL_MODE_POLL;
     }
 };
 
@@ -50,37 +52,10 @@ int main(int argc, char *argv[])
 
     const captidom::ChannelType *types;
     int typesLen;
-    ch.getSupportedTypes(&types, typesLen);
+    unprovisionedCountChannel->getSupportedTypes(&types, typesLen);
     printf("Types: %d (%d)\n", typesLen, types[0]);
 
-    captidom::ChannelConfig originalConfig = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelMode::CHANNEL_MODE_POLL};
+    printf("Channel type: %d; mode %d\n", ch.getType(), ch.getMode());
 
-    ch.setConfig(&originalConfig);
-
-    {
-        const captidom::ChannelConfig *config = ch.getConfig();
-
-        printf("Configured type: %d; mode %d\n", config->type, config->mode);
-    }
-
-    originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE;
-    originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_PUSH;
-
-    ch.setConfig(&originalConfig);
-    {
-        const captidom::ChannelConfig *config = ch.getConfig();
-
-        printf("Reconfigured type: %d; mode %d\n", config->type, config->mode);
-    }
-
-    originalConfig.type = captidom::ChannelType::CHANNEL_TYPE_NONE;
-    originalConfig.mode = captidom::ChannelMode::CHANNEL_MODE_NONE;
-
-    ch.setConfig(&originalConfig);
-    {
-        const captidom::ChannelConfig *config = ch.getConfig();
-
-        printf("Disabled type: %d; mode %d\n", config->type, config->mode);
-    }
     return 0;
 }
