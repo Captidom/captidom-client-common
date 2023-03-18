@@ -5,14 +5,15 @@
 #include <thread>
 
 #include "input-channel.h"
+#include "base-provisioned-channel.h"
 
 namespace captidom
 {
 
-    class IOChannel : virtual public InputChannel
+    class OutputChannel : virtual public BaseChannel, virtual public BaseProvisionedChannel
     {
     public:
-        IOChannel() {};
+        OutputChannel() {};
         virtual void setValue(const char *strValue, int strValueLen) = 0;
     };
 }
