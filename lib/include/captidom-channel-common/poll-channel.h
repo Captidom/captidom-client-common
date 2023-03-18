@@ -4,13 +4,13 @@
 #include <chrono>
 #include <thread>
 
-#include "push-channel.h"
+#include "input-channel.h"
 #include "channel-value-callback.h"
 
 namespace captidom
 {
 
-    class PollChannel : virtual public PushChannel
+    class PollChannel : virtual public InputChannel
     {
     private:
         int pollIntervalSeconds = 0;
