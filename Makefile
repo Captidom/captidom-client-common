@@ -1,4 +1,4 @@
-LIB_IDIR=lib/include/captidom-channel-common
+LIB_IDIR=lib/include/captidom-client-common
 EXAMPLE_IDIR=lib/include
 SRC_DIR=lib/src
 EXAMPLE_DIR=example
@@ -43,18 +43,18 @@ $(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp
 	$(CC) -c -o $@ $< $(EXAMPLE_CFLAGS)
 
 
-captidom-channel-common.so: $(OBJ_FILES)
+captidom-client-common.so: $(OBJ_FILES)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -shared -o $(BINDIR)/$@ $^ $(LIB_CFLAGS) $(LIBS) $(LDFLAGS)
 
 
-library: captidom-channel-common.so
+library: captidom-client-common.so
 
 $(BINDIR)/example: library $(EXAMPLE_OBJ_FILES)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-channel-common.so
+	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-client-common.so
 
 example: $(BINDIR)/example
 
@@ -64,7 +64,7 @@ all: library example
 
 clean:
 	rm -f $(OBJ_FILES) ${EXAMPLE_OBJ_FILES}
-	rm -f $(BINDIR)/captidom-channel-common.so
+	rm -f $(BINDIR)/captidom-client-common.so
 	rm -f $(BINDIR)/example
 
 

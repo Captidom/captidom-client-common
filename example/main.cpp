@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "captidom-channel-common/list.h"
-#include "captidom-channel-common/unprovisioned-channel.h"
-#include "captidom-channel-common/poll-channel.h"
+#include "captidom-client-common/list.h"
+#include "captidom-client-common/unprovisioned-channel.h"
+#include "captidom-client-common/poll-channel.h"
 
 namespace
 {
