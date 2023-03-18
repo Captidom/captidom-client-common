@@ -2,19 +2,15 @@
 
 namespace captidom
 {
-    BaseChannel::BaseChannel(int id, const char *name, int nameLength, const ChannelType supportedTypes[], int numTypes, const ChannelMode supportedModes[], int numModes)
+    BaseChannel::BaseChannel(int id, const char *name, int nameLength)
     {
         this->id = id;
 
         this->name = new List<char>(name, nameLength);
-        this->supportedTypes = new List<ChannelType>(supportedTypes, numTypes);
-        this->supportedModes = new List<ChannelMode>(supportedModes, numModes);
     }
 
     BaseChannel::~BaseChannel()
     {
-        delete this->supportedModes;
-        delete this->supportedTypes;
         delete this->name;
     }
 
@@ -26,88 +22,5 @@ namespace captidom
     void BaseChannel::getName(const char **destination, int &length)
     {
         this->name->getItems(destination, length);
-    }
-
-    void BaseChannel::getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes)
-    {
-        this->supportedTypes->getItems(supportedTypes, maxTypes);
-    }
-
-    bool BaseChannel::supportsType(ChannelType type)
-    {
-
-        if (ChannelType::CHANNEL_TYPE_NONE == type)
-        {
-            return true;
-        }
-
-        const ChannelType *types;
-        int numTypes;
-        this->getSupportedTypes(&types, numTypes);
-
-        for (int i = 0; i < numTypes; i++)
-        {
-            if (types[i] == type)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    void BaseChannel::getSupportedModes(const ChannelMode **supportedModes, int &maxModes)
-    {
-        this->supportedModes->getItems(supportedModes, maxModes);
-    }
-
-    bool BaseChannel::supportsMode(ChannelMode mode)
-    {
-
-        if (ChannelMode::CHANNEL_MODE_NONE == mode)
-        {
-            return true;
-        }
-
-        const ChannelMode *modes;
-        int numModes;
-        this->getSupportedModes(&modes, numModes);
-
-        for (int i = 0; i < numModes; i++)
-        {
-            if (modes[i] == mode)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool BaseChannel::setConfig(const ChannelConfig *config)
-    {
-
-        const ChannelConfig *currentConfig = this->getConfig();
-
-        if (!this->supportsType(config->type) || !this->supportsMode(config->mode))
-        {
-            return false;
-        }
-
-        if (*currentConfig == *config)
-        {
-            return true;
-        }
-
-        this->config = *config;
-
-        this->applyConfig(config);
-
-        return true;
-    }
-
-    const ChannelConfig *BaseChannel::getConfig()
-    {
-        return &this->config;
     }
 }
