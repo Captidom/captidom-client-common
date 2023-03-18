@@ -6,12 +6,12 @@ namespace captidom
     {
         this->id = id;
 
-        this->name = new List<char>(name, nameLength);
+        this->name = name;
+        this->nameLength = nameLength;
     }
 
     BaseChannel::~BaseChannel()
     {
-        delete this->name;
     }
 
     int BaseChannel::getId()
@@ -21,6 +21,7 @@ namespace captidom
 
     void BaseChannel::getName(const char **destination, int &length)
     {
-        this->name->getItems(destination, length);
+        *destination = this->name;
+        length = this->nameLength;
     }
 }

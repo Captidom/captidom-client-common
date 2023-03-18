@@ -6,11 +6,11 @@
 
 namespace
 {
-    const captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN, captidom::ChannelType::CHANNEL_TYPE_DIGITAL_TEMPERATURE};
-    const captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
+    captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN};
+    captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-captidom::UnprovisionedChannel *unprovisionedCountChannel = new captidom::UnprovisionedChannel(0, "test", 4, types, 2, pollModes, 1);
+captidom::UnprovisionedChannel *unprovisionedCountChannel = new captidom::UnprovisionedChannel(0, "test", 4, types, 1, pollModes, 1);
 
 class SimpleCountPollChannel : virtual public captidom::PollChannel
 {
@@ -28,11 +28,13 @@ public:
         sprintf(value, "%d", this->currentCount++);
     }
 
-    captidom::ChannelType getType() {
+    captidom::ChannelType getType()
+    {
         return captidom::ChannelType::CHANNEL_TYPE_ANALOG_OUT;
     }
 
-    captidom::ChannelMode getMode() {
+    captidom::ChannelMode getMode()
+    {
         return captidom::ChannelMode::CHANNEL_MODE_POLL;
     }
 };
@@ -50,10 +52,14 @@ int main(int argc, char *argv[])
     printf("Value: %s\n", ch.getValue());
     printf("Value: %s\n", ch.getValue());
 
-    const captidom::ChannelType *types;
-    int typesLen;
-    unprovisionedCountChannel->getSupportedTypes(&types, typesLen);
-    printf("Types: %d (%d)\n", typesLen, types[0]);
+    auto typesList = unprovisionedCountChannel->getSupportedTypes();
+    captidom::ChannelType *types = (captidom::ChannelType *)malloc(10 * sizeof(captidom::ChannelType));
+
+    typesList->getItems(&types);
+
+    printf("Types: %d (%d, %d, %d)\n", typesList->getCount(), types[0], types[1], types[2]);
+
+    free(types);
 
     printf("Channel type: %d; mode %d\n", ch.getType(), ch.getMode());
 

@@ -16,7 +16,8 @@ namespace captidom
     private:
         int id;
 
-        List<char> *name;
+        const char *name;
+        int nameLength;
 
     public:
         BaseChannel(int id, const char *name, int nameLength);

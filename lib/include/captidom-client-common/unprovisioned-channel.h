@@ -19,13 +19,13 @@ namespace captidom
         List<ChannelMode> *supportedModes;
 
     public:
-        UnprovisionedChannel(int id, const char *name, int nameLength, const ChannelType *supportedTypes, int maxTypes, const ChannelMode *supportedModes, int maxModes);
+        UnprovisionedChannel(int id, const char *name, int nameLength, ChannelType *supportedTypes, int maxTypes, ChannelMode *supportedModes, int maxModes);
 
         ~UnprovisionedChannel();
 
-        void getSupportedTypes(const ChannelType **supportedTypes, int &maxTypes);
+        const List<ChannelType> *getSupportedTypes();
         bool supportsType(ChannelType type);
-        void getSupportedModes(const ChannelMode **supportedModes, int &maxModes);
+        const List<ChannelMode> * getSupportedModes();
         bool supportsMode(ChannelMode mode);
     };
 }
