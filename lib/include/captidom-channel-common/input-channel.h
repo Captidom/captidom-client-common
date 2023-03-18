@@ -5,10 +5,11 @@
 #include <thread>
 
 #include "base-channel.h"
+#include "base-provisioned-channel.h"
 
 namespace captidom
 {
-    class InputChannel : virtual public BaseChannel
+    class InputChannel : virtual public BaseChannel, virtual public BaseProvisionedChannel
     {
     protected:
         char serializedValue[64];
