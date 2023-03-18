@@ -24,8 +24,8 @@ namespace captidom
 
         ~BaseChannel();
 
-        void getName(const char **destination, int &length);
+        void getName(const char **destination, int &length) const;
 
-        int getId();
+        int getId() const;
     };
 }

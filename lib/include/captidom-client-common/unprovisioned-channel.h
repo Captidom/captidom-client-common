@@ -23,9 +23,9 @@ namespace captidom
 
         ~UnprovisionedChannel();
 
-        const List<ChannelType> *getSupportedTypes();
-        bool supportsType(ChannelType type);
-        const List<ChannelMode> * getSupportedModes();
-        bool supportsMode(ChannelMode mode);
+        const List<ChannelType> *getSupportedTypes() const;
+        bool supportsType(ChannelType type) const;
+        const List<ChannelMode> * getSupportedModes() const;
+        bool supportsMode(ChannelMode mode) const;
     };
 }

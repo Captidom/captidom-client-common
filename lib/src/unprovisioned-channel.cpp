@@ -14,12 +14,12 @@ namespace captidom
         delete this->supportedTypes;
     }
 
-    const List<ChannelType> *UnprovisionedChannel::getSupportedTypes()
+    const List<ChannelType> *UnprovisionedChannel::getSupportedTypes() const
     {
         return this->supportedTypes;
     }
 
-    bool UnprovisionedChannel::supportsType(ChannelType type)
+    bool UnprovisionedChannel::supportsType(ChannelType type) const
     {
 
         if (ChannelType::CHANNEL_TYPE_NONE == type)
@@ -30,12 +30,12 @@ namespace captidom
         return this->getSupportedTypes()->contains(&type);
     }
 
-    const List<ChannelMode> * UnprovisionedChannel::getSupportedModes()
+    const List<ChannelMode> * UnprovisionedChannel::getSupportedModes() const
     {
         return this->supportedModes;
     }
 
-    bool UnprovisionedChannel::supportsMode(ChannelMode mode)
+    bool UnprovisionedChannel::supportsMode(ChannelMode mode) const
     {
 
         if (ChannelMode::CHANNEL_MODE_NONE == mode)

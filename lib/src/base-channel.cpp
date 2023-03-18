@@ -14,12 +14,12 @@ namespace captidom
     {
     }
 
-    int BaseChannel::getId()
+    int BaseChannel::getId() const
     {
         return this->id;
     }
 
-    void BaseChannel::getName(const char **destination, int &length)
+    void BaseChannel::getName(const char **destination, int &length) const
     {
         *destination = this->name;
         length = this->nameLength;
