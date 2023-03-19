@@ -20,9 +20,10 @@ SHARED_LIBS =
 LIBS = -Wl,-Bstatic $(STATIC_LIBS) -Wl,-Bdynamic $(SHARED_LIBS)
 LDFLAGS=
 
-SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+CPP_FILES := $(wildcard $(SRC_DIR)/*/*.cpp) 
+CPP_FILES := $(CPP_FILES)$(wildcard $(SRC_DIR)/*.cpp)
 EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
-OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+OBJ_FILES := $(patsubst $(SRC_DIR)/%,build/obj/%,$(CPP_FILES:.cpp=.o))
 EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
 
 ARCH=
@@ -32,7 +33,8 @@ ARCH_AARCH64=aarch64-linux-gnu
 CMAKE_TOOLCHAIN=
 CONFIGURE_ARCH=
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+build/obj/%.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS)
