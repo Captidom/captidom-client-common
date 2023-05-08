@@ -8,7 +8,7 @@ namespace captidom
     template <class T>
     class List
     {
-    private:
+    protected:
         template <class P>
         class ListItem
         {

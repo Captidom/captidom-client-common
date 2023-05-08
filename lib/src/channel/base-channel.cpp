@@ -1,4 +1,4 @@
-#include "base-channel.h"
+#include "channel/base-channel.h"
 
 namespace captidom
 {

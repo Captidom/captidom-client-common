@@ -5,7 +5,7 @@
 #include <thread>
 #include <string.h>
 
-#include "list.h"
+#include "util/list.h"
 #include "base-channel.h"
 #include "channel-config.h"
 
