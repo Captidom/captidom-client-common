@@ -3,6 +3,7 @@
 #include "captidom-client-common/util/list.h"
 #include "captidom-client-common/channel/unprovisioned-channel.h"
 #include "captidom-client-common/channel/poll-channel.h"
+#include "captidom-client-common/client/client.h"
 
 namespace
 {
@@ -62,6 +63,13 @@ int main(int argc, char *argv[])
     free(types);
 
     printf("Channel type: %d; mode %d\n", ch.getType(), ch.getMode());
+
+    captidom::Client *client = new captidom::Client();
+    captidom::WakeupMessage *message;
+
+    client->onMessageReceived(0, &message);
+
+    printf("Wakeup message: platform %s; ip %s; version: %s\n", message->getPlatform(), message->getIp(), message->getVersion());
 
     return 0;
 }
