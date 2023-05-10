@@ -84,8 +84,8 @@ build/test/%.bin: build/obj/test/%.o
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-client-common.so -lpthread -lm
-	./$@
+	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -l:captidom-client-common.so
+	LD_LIBRARY_PATH=$(BINDIR) ./$@
 
 all: library example testlib test
 
