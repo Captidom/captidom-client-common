@@ -80,19 +80,21 @@ build/obj/test/%.o: test/%.cpp
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -std=c++11
 
-build/test/%.bin: build/obj/test/%.o
+build/test/%.bin: build/obj/test/%.o testlib
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -l:captidom-client-common.so
-	LD_LIBRARY_PATH=$(BINDIR) ./$@
 
-all: library example testlib test
+runtest: test
+	$(foreach path,$(TEST_BIN_FILES),LD_LIBRARY_PATH=$(BINDIR) ./$(path))
+
+all: library example test
 
 .PHONY: clean
 
 clean:
-	rm -f $(OBJ_FILES) ${EXAMPLE_OBJ_FILES} $(TEST_OBJ_FILES)
+	rm -f $(TEST_BIN_FILES) $(OBJ_FILES) ${EXAMPLE_OBJ_FILES} $(TEST_OBJ_FILES)
 	rm -f $(BINDIR)/captidom-client-common.so
 	rm -f $(BINDIR)/example
 	rm -rf $(BINDIR)/googletest
