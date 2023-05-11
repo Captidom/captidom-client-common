@@ -3,7 +3,7 @@
 
 namespace captidom
 {
-    Client::Client(const char * const platform, const char * const ip, const char * const version)
+    Client::Client(const char * const platform, const char * const ip)
     {
         char * buffer = (char *)malloc(sizeof(char *) * strlen(platform + 1));
         memcpy(buffer, platform, strlen(platform) + 1);
@@ -31,6 +31,6 @@ namespace captidom
 
     void Client::onMessageReceived(WakeupBroadcastMessage *request, WakeupMessage **response)
     {
-        *response = new WakeupMessage("platform1", "127.0.0.1");
+        *response = new WakeupMessage(this->platform, this->ip, this->version);
     }
 }

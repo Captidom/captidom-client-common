@@ -5,7 +5,7 @@
 
 namespace captidom
 {
-    WakeupMessage::WakeupMessage(const char *const platform, const char *const ip) : BaseMessage(MessageType::WakeupMessageType)
+    WakeupMessage::WakeupMessage(const char *const platform, const char *const ip, const char *const version) : BaseMessage(MessageType::WakeupMessageType)
     {
         this->platform = (char *)malloc(sizeof(char *) * strlen(platform + 1));
         memcpy(this->platform, platform, strlen(platform) + 1);
@@ -13,8 +13,8 @@ namespace captidom
         this->ip = (char *)malloc(sizeof(char *) * strlen(ip + 1));
         memcpy(this->ip, ip, strlen(ip) + 1);
 
-        this->version = (char *)malloc(sizeof(char *) * strlen(CAPTIDOM_CLIENT_VERSION + 1));
-        memcpy(this->version, CAPTIDOM_CLIENT_VERSION, strlen(CAPTIDOM_CLIENT_VERSION) + 1);
+        this->version = (char *)malloc(sizeof(char *) * strlen(version + 1));
+        memcpy(this->version, version, strlen(version) + 1);
     };
 
     WakeupMessage::~WakeupMessage()

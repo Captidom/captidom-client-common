@@ -17,7 +17,7 @@ namespace captidom
     public:
         ChannelList *channels;
 
-        Client(const char * const platform, const char * const ip, const char * const version);
+        Client(const char * const platform, const char * const ip);
         Client(const UnprovisionedChannel **channels, int numChannels);
         ~Client();
 

@@ -12,7 +12,7 @@ namespace captidom
         char *version;
 
     public:
-        WakeupMessage(const char *const platform, const char *const ip);
+        WakeupMessage(const char *const platform, const char *const ip, const char *const version);
         ~WakeupMessage();
 
         const char *const getPlatform();
