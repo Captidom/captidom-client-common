@@ -19,6 +19,9 @@ namespace captidom
 
     WakeupMessage::~WakeupMessage()
     {
+        free(this->version);
+        free(this->ip);
+        free(this->platform);
     }
 
     const char *const WakeupMessage::getPlatform()

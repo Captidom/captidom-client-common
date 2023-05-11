@@ -3,9 +3,9 @@
 
 namespace captidom
 {
-    Client::Client(const char * const platform, const char * const ip)
+    Client::Client(const char *const platform, const char *const ip)
     {
-        char * buffer = (char *)malloc(sizeof(char *) * strlen(platform + 1));
+        char *buffer = (char *)malloc(sizeof(char *) * strlen(platform + 1));
         memcpy(buffer, platform, strlen(platform) + 1);
         this->platform = buffer;
 
@@ -26,6 +26,9 @@ namespace captidom
 
     Client::~Client()
     {
+        free(this->version);
+        free(this->ip);
+        free(this->platform);
         delete this->channels;
     }
 

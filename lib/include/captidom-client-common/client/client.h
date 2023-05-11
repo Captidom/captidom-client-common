@@ -11,9 +11,9 @@ namespace captidom
 
     class Client
     {
-        const char * platform;
-        const char * ip;
-        const char * version;
+        char * platform;
+        char * ip;
+        char * version;
     public:
         ChannelList *channels;
 
