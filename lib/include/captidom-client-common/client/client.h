@@ -11,10 +11,13 @@ namespace captidom
 
     class Client
     {
+        const char * platform;
+        const char * ip;
+        const char * version;
     public:
         ChannelList *channels;
 
-        Client();
+        Client(const char * const platform, const char * const ip, const char * const version);
         Client(const UnprovisionedChannel **channels, int numChannels);
         ~Client();
 

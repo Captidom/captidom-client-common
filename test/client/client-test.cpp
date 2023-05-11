@@ -6,7 +6,11 @@ using namespace captidom;
 
 TEST(client, onWakeupMessageBroadcast)
 {
-    Client *client = new Client();
+    const char * platform = "some-test-platform";
+    const char * ip = "127.0.0.1";
+    const char * version = "99.99.99";
+
+    Client *client = new Client(platform, ip, version);
     WakeupMessage *message = (WakeupMessage *)malloc(sizeof(WakeupMessage));
     client->onMessageReceived(nullptr, &message);
     ASSERT_STREQ(message->getPlatform(), "platform1");
