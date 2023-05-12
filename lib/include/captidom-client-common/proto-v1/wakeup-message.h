@@ -6,7 +6,6 @@ namespace captidom
 {
     class WakeupMessage : BaseMessage
     {
-
         char *platform;
         char *ip;
         char *version;
@@ -15,8 +14,8 @@ namespace captidom
         WakeupMessage(const char *const platform, const char *const ip, const char *const version);
         ~WakeupMessage();
 
-        const char *const getPlatform();
-        const char *const getIp();
-        const char *const getVersion();
+        const char *const getPlatform() const;
+        const char *const getIp() const;
+        const char *const getVersion() const;
     };
 }

@@ -24,17 +24,17 @@ namespace captidom
         free(this->platform);
     }
 
-    const char *const WakeupMessage::getPlatform()
+    const char *const WakeupMessage::getPlatform() const
     {
         return this->platform;
     }
 
-    const char *const WakeupMessage::getIp()
+    const char *const WakeupMessage::getIp() const
     {
         return this->ip;
     }
 
-    const char *const WakeupMessage::getVersion()
+    const char *const WakeupMessage::getVersion() const
     {
         return this->version;
     }
