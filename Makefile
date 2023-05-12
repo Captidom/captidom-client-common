@@ -78,7 +78,7 @@ build/obj/test/%.o: test/%.cpp
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -std=c++11
+	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -std=c++11
 
 build/test/%.bin: build/obj/test/%.o testlib
 	mkdir -p $(dir $@)

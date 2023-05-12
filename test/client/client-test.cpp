@@ -9,6 +9,13 @@ using namespace captidom;
 using ::testing::_;
 using ::testing::Matcher;
 
+MATCHER_P(WakeupMessageEquals, other, "Equality matcher for type WakeupMessage")
+{
+    EXPECT_TRUE(0 == strcmp(arg->getPlatform(), other->getPlatform())) << "Expected platform \"" << other->getPlatform() << "\" got \"" << arg->getPlatform() << "\"";
+    EXPECT_TRUE(0 == strcmp(arg->getIp(), other->getIp())) << "Expected ip \"" << other->getIp() << "\" got \"" << arg->getIp() << "\"";
+    EXPECT_TRUE(0 == strcmp(arg->getVersion(), other->getVersion())) << "Expected version \"" << other->getVersion() << "\" got \"" << arg->getVersion() << "\"";
+}
+
 class MockTransport : public ITransport
 {
 public:
@@ -34,7 +41,10 @@ TEST(client, respondToWakeupBroadcast)
     Client *client = new Client(platform, ip, &transport);
 
     WakeupBroadcastMessage request;
-    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(1);
+    const WakeupMessage response(platform, ip, CAPTIDOM_CLIENT_VERSION);
+
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+
     transport.receiveWakeupBroadcast();
 
     delete client;
