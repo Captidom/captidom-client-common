@@ -25,10 +25,14 @@ namespace captidom
         {
             this->transport->setReceiver(this->receiver);
         }
+
+        this->sendWakeup();
     }
     Client::Client(const UnprovisionedChannel **channels, int numChannels)
     {
         this->channels = new ChannelList(channels, numChannels);
+
+        this->sendWakeup();
     }
 
     Client::~Client()

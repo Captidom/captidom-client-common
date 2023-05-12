@@ -37,15 +37,32 @@ TEST(client, respondToWakeupBroadcast)
     const char *ip = "127.0.0.1";
 
     MockTransport transport;
-
-    Client *client = new Client(platform, ip, &transport);
-
-    WakeupBroadcastMessage request;
     const WakeupMessage response(platform, ip, CAPTIDOM_CLIENT_VERSION);
 
     EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
 
+    Client *client = new Client(platform, ip, &transport);
+
+    WakeupBroadcastMessage request;
+
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+
     transport.receiveWakeupBroadcast();
+
+    delete client;
+}
+
+TEST(client, sendsWakeupOnStart)
+{
+    const char *platform = "some-test-platform";
+    const char *ip = "127.0.0.1";
+
+    MockTransport transport;
+    const WakeupMessage response(platform, ip, CAPTIDOM_CLIENT_VERSION);
+
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+
+    Client *client = new Client(platform, ip, &transport);
 
     delete client;
 }
