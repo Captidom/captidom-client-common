@@ -28,6 +28,8 @@ namespace captidom
 
         ITransport *transport;
 
+        void sendWakeup() const;
+
     public:
         const Receiver *receiver;
         ChannelList *channels;

@@ -40,11 +40,15 @@ namespace captidom
         delete this->receiver;
     }
 
+    void Client::sendWakeup() const {
+        WakeupMessage response(this->platform, this->ip, this->version);
+        this->transport->send(&response);
+    }
+
     Client::Receiver::Receiver(Client *client) : client(client){};
 
     void Client::Receiver::onMessageReceived(WakeupBroadcastMessage *request) const
     {
-        WakeupMessage response(this->client->platform, this->client->ip, this->client->version);
-        this->client->transport->send(&response);
+        this->client->sendWakeup();
     };
 }
