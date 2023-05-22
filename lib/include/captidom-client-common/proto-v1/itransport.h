@@ -2,6 +2,7 @@
 
 #include "proto-v1/wakeup-broadcast-message.h"
 #include "proto-v1/wakeup-message.h"
+#include "proto-v1/describe-message.h"
 #include "proto-v1/ireceiver.h"
 
 namespace captidom
@@ -18,5 +19,6 @@ namespace captidom
         virtual void stop() = 0;
         virtual void send(const WakeupBroadcastMessage *message) const = 0;
         virtual void send(const WakeupMessage *message) const = 0;
+        virtual void send(const DescribeMessage *message) const = 0;
     };
 }

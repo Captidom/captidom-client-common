@@ -4,6 +4,7 @@
 #include "channel/channel-list.h"
 
 #include "proto-v1/wakeup-broadcast-message.h"
+#include "proto-v1/describe-request-message.h"
 #include "proto-v1/wakeup-message.h"
 #include "proto-v1/itransport.h"
 #include "proto-v1/ireceiver.h"
@@ -20,6 +21,7 @@ namespace captidom
         public:
             Receiver(Client *client);
             void onMessageReceived(WakeupBroadcastMessage *request) const;
+            void onMessageReceived(DescribeRequestMessage *request) const;
         };
 
         char *platform;
@@ -29,6 +31,7 @@ namespace captidom
         ITransport *transport;
 
         void sendWakeup() const;
+        void sendDescribe() const;
 
     public:
         const Receiver *receiver;

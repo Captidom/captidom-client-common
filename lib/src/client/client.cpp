@@ -1,6 +1,8 @@
 #include "client/client.h"
 #include "client/version.h"
 
+#include "proto-v1/describe-message.h"
+
 namespace captidom
 {
     Client::Client(const char *const platform, const char *const ip, ITransport *transport) : transport(transport)
@@ -49,10 +51,20 @@ namespace captidom
         this->transport->send(&response);
     }
 
+    void Client::sendDescribe() const {
+        DescribeMessage response;
+        this->transport->send(&response);
+    }
+
     Client::Receiver::Receiver(Client *client) : client(client){};
 
     void Client::Receiver::onMessageReceived(WakeupBroadcastMessage *request) const
     {
         this->client->sendWakeup();
+    };
+
+    void Client::Receiver::onMessageReceived(DescribeRequestMessage *request) const
+    {
+        this->client->sendDescribe();
     };
 }
