@@ -6,8 +6,12 @@ namespace captidom
 {
     class DescribeMessage : BaseMessage
     {
+        char *deviceId;
+
     public:
-        DescribeMessage();
+        DescribeMessage(const char *const deviceId);
         ~DescribeMessage();
+
+        const char *const getDeviceId() const;
     };
 }

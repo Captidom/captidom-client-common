@@ -5,9 +5,13 @@
 
 namespace captidom
 {
-    Client::Client(const char *const platform, const char *const ip, ITransport *transport) : transport(transport)
+    Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport) : transport(transport)
     {
-        char *buffer = (char *)malloc(sizeof(char *) * strlen(platform + 1));
+        char *buffer = (char *)malloc(sizeof(char *) * strlen(deviceId + 1));
+        memcpy(buffer, deviceId, strlen(deviceId) + 1);
+        this->deviceId = buffer;
+
+        buffer = (char *)malloc(sizeof(char *) * strlen(platform + 1));
         memcpy(buffer, platform, strlen(platform) + 1);
         this->platform = buffer;
 
@@ -39,6 +43,7 @@ namespace captidom
 
     Client::~Client()
     {
+        free(this->deviceId);
         free(this->version);
         free(this->ip);
         free(this->platform);
@@ -52,7 +57,7 @@ namespace captidom
     }
 
     void Client::sendDescribe() const {
-        DescribeMessage response;
+        DescribeMessage response(this->deviceId);
         this->transport->send(&response);
     }
 

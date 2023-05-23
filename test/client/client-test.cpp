@@ -20,7 +20,7 @@ MATCHER_P(WakeupMessageEquals, other, "Equality matcher for type WakeupMessage")
 
 MATCHER_P(DescribeMessageEquals, other, "Equality matcher for type DescribeMessage")
 {
-    EXPECT_TRUE(true);
+    EXPECT_TRUE(0 == strcmp(arg->getDeviceId(), other->getDeviceId())) << "Expected hwInfo \"" << other->getDeviceId() << "\" got \"" << arg->getDeviceId() << "\"";
 }
 
 class MockTransport : public ITransport
@@ -47,6 +47,7 @@ public:
 
 TEST(client, respondToWakeupBroadcast)
 {
+    const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
     const char *ip = "127.0.0.1";
 
@@ -55,7 +56,7 @@ TEST(client, respondToWakeupBroadcast)
 
     EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
 
-    Client *client = new Client(platform, ip, &transport);
+    Client *client = new Client(deviceId, platform, ip, &transport);
 
     WakeupBroadcastMessage request;
 
@@ -68,6 +69,7 @@ TEST(client, respondToWakeupBroadcast)
 
 TEST(client, sendsWakeupOnStart)
 {
+    const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
     const char *ip = "127.0.0.1";
 
@@ -76,19 +78,20 @@ TEST(client, sendsWakeupOnStart)
 
     EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
 
-    Client *client = new Client(platform, ip, &transport);
+    Client *client = new Client(deviceId, platform, ip, &transport);
 
     delete client;
 }
 
 TEST(client, respondToDescribe)
 {
+    const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
     const char *ip = "127.0.0.1";
 
     MockTransport transport;
     const WakeupMessage wakeupResponse(platform, ip, CAPTIDOM_CLIENT_VERSION);
-    const DescribeMessage describeResponse;
+    const DescribeMessage describeResponse(deviceId);
 
     EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&wakeupResponse)))).Times(1);
     EXPECT_CALL(
@@ -96,7 +99,7 @@ TEST(client, respondToDescribe)
         send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
         .Times(1);
 
-    Client *client = new Client(platform, ip, &transport);
+    Client *client = new Client(deviceId, platform, ip, &transport);
 
     transport.receiveDescribeRequest();
 
