@@ -21,7 +21,6 @@ namespace captidom
 
     bool UnprovisionedChannel::supportsType(ChannelType type) const
     {
-
         if (ChannelType::CHANNEL_TYPE_NONE == type)
         {
             return true;
@@ -30,7 +29,7 @@ namespace captidom
         return this->getSupportedTypes()->contains(&type);
     }
 
-    const List<ChannelMode> * UnprovisionedChannel::getSupportedModes() const
+    const List<ChannelMode> *UnprovisionedChannel::getSupportedModes() const
     {
         return this->supportedModes;
     }
