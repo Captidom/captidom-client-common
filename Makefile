@@ -26,8 +26,8 @@ EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,build/obj/%,$(CPP_FILES:.cpp=.o))
 EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
 
-TEST_CPP_FILES := $(wildcard test/*/*.cpp) 
-TEST_CPP_FILES := $(TEST_CPP_FILES)$(wildcard test/*.cpp)
+TEST_CPP_FILES := $(wildcard test/src/*/*.cpp) 
+TEST_CPP_FILES := $(TEST_CPP_FILES)$(wildcard test/src/*.cpp)
 TEST_OBJ_FILES := $(patsubst test/%,build/obj/test/%,$(TEST_CPP_FILES:.cpp=.o))
 TEST_BIN_FILES := $(patsubst build/obj/test/%,build/test/%,$(TEST_OBJ_FILES:.o=.bin))
 
@@ -78,7 +78,7 @@ build/obj/test/%.o: test/%.cpp
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -std=c++11
+	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -Itest/include -std=c++11
 
 build/test/%.bin: build/obj/test/%.o testlib
 	mkdir -p $(dir $@)

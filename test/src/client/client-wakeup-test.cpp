@@ -3,6 +3,7 @@
 #include "captidom-client-common/proto-v1/describe-message.h"
 #include "captidom-client-common/proto-v1/describe-request-message.h"
 #include "client/version.h"
+#include "mock-transport.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -17,22 +18,6 @@ MATCHER_P(WakeupMessageEquals, other, "Equality matcher for type WakeupMessage")
     EXPECT_TRUE(0 == strcmp(arg->getIp(), other->getIp())) << "Expected ip \"" << other->getIp() << "\" got \"" << arg->getIp() << "\"";
     EXPECT_TRUE(0 == strcmp(arg->getVersion(), other->getVersion())) << "Expected version \"" << other->getVersion() << "\" got \"" << arg->getVersion() << "\"";
 }
-
-class MockTransport : public ITransport
-{
-public:
-    MOCK_METHOD(void, start, (), (override));
-    MOCK_METHOD(void, stop, (), (override));
-    MOCK_METHOD(void, send, (const WakeupBroadcastMessage *message), (const override));
-    MOCK_METHOD(void, send, (const WakeupMessage *message), (const override));
-    MOCK_METHOD(void, send, (const DescribeMessage *message), (const override));
-
-    void receiveWakeupBroadcast()
-    {
-        WakeupBroadcastMessage request;
-        this->receiver->onMessageReceived(&request);
-    }
-};
 
 TEST(clientWakeup, respondToWakeupBroadcast)
 {

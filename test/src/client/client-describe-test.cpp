@@ -3,6 +3,7 @@
 #include "captidom-client-common/proto-v1/describe-message.h"
 #include "captidom-client-common/proto-v1/describe-request-message.h"
 #include "client/version.h"
+#include "mock-transport.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -15,22 +16,6 @@ MATCHER_P(DescribeMessageEquals, other, "Equality matcher for type DescribeMessa
 {
     EXPECT_TRUE(0 == strcmp(arg->getDeviceId(), other->getDeviceId())) << "Expected hwInfo \"" << other->getDeviceId() << "\" got \"" << arg->getDeviceId() << "\"";
 }
-
-class MockTransport : public ITransport
-{
-public:
-    MOCK_METHOD(void, start, (), (override));
-    MOCK_METHOD(void, stop, (), (override));
-    MOCK_METHOD(void, send, (const WakeupBroadcastMessage *message), (const override));
-    MOCK_METHOD(void, send, (const WakeupMessage *message), (const override));
-    MOCK_METHOD(void, send, (const DescribeMessage *message), (const override));
-
-    void receiveDescribeRequest()
-    {
-        DescribeRequestMessage request;
-        this->receiver->onMessageReceived(&request);
-    }
-};
 
 TEST(clientDescribe, respondToDescribe)
 {
