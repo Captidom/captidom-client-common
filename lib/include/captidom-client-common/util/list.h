@@ -105,6 +105,24 @@ namespace captidom
             }
         }
 
+        T *getItem(unsigned int index) const
+        {
+            if (index >= this->getCount() || 0 == this->firstItem)
+            {
+                return 0;
+            }
+
+            auto item = this->firstItem;
+
+            while (item && index)
+            {
+                item = item->next;
+                index--;
+            }
+
+            return item->payload;
+        }
+
         int getCount() const
         {
             if (0 == this->firstItem)
