@@ -22,6 +22,8 @@ LDFLAGS=
 
 CPP_FILES := $(wildcard $(SRC_DIR)/*/*.cpp) 
 CPP_FILES := $(CPP_FILES)$(wildcard $(SRC_DIR)/*.cpp)
+HEADER_FILES := $(wildcard $(LIB_IDIR)/*/*.h)
+HEADER_FILES := $(HEADER_FILES)$(wildcard $(LIB_IDIR)/*.h)
 EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,build/obj/%,$(CPP_FILES:.cpp=.o))
 EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
@@ -38,13 +40,13 @@ ARCH_AARCH64=aarch64-linux-gnu
 CMAKE_TOOLCHAIN=
 CONFIGURE_ARCH=
 
-build/obj/%.o: $(SRC_DIR)/%.cpp
+build/obj/%.o: $(SRC_DIR)/%.cpp $(HEADER_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS)
 
-$(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp
+$(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp  $(HEADER_FILES)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(EXAMPLE_CFLAGS)
@@ -74,7 +76,7 @@ $(BINDIR)/googletest/lib/libgtest.a:
 
 test: library testlib $(TEST_BIN_FILES)
 
-build/obj/test/%.o: test/%.cpp
+build/obj/test/%.o: test/%.cpp  $(HEADER_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
