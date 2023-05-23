@@ -15,6 +15,7 @@ using ::testing::Matcher;
 MATCHER_P(DescribeMessageEquals, other, "Equality matcher for type DescribeMessage")
 {
     EXPECT_TRUE(0 == strcmp(arg->getDeviceId(), other->getDeviceId())) << "Expected hwInfo \"" << other->getDeviceId() << "\" got \"" << arg->getDeviceId() << "\"";
+    EXPECT_EQ(arg->getChannels()->getCount(), other->getChannels()->getCount()) << "Expected channelCount \"" << other->getChannels()->getCount() << "\" got \"" << arg->getChannels()->getCount() << "\"";
 }
 
 TEST(clientDescribe, respondToDescribe)
@@ -22,9 +23,10 @@ TEST(clientDescribe, respondToDescribe)
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
     const char *ip = "127.0.0.1";
+    ChannelList list(0, 0);
 
     MockTransport transport;
-    const DescribeMessage describeResponse(deviceId);
+    const DescribeMessage describeResponse(deviceId, &list);
 
     EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(1);
     EXPECT_CALL(

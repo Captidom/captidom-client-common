@@ -30,10 +30,7 @@ namespace captidom
             this->transport->setReceiver(this->receiver);
         }
 
-        if (numChannels)
-        {
-            this->channels = new ChannelList(channels, numChannels);
-        }
+        this->channels = new ChannelList(channels, numChannels);
 
         this->sendWakeup();
     }
@@ -44,20 +41,19 @@ namespace captidom
         free(this->version);
         free(this->ip);
         free(this->platform);
-        if (this->channels)
-        {
-            delete this->channels;
-        }
+        delete this->channels;
         delete this->receiver;
     }
 
-    void Client::sendWakeup() const {
+    void Client::sendWakeup() const
+    {
         WakeupMessage response(this->platform, this->ip, this->version);
         this->transport->send(&response);
     }
 
-    void Client::sendDescribe() const {
-        DescribeMessage response(this->deviceId);
+    void Client::sendDescribe() const
+    {
+        DescribeMessage response(this->deviceId, this->channels);
         this->transport->send(&response);
     }
 
