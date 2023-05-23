@@ -36,10 +36,9 @@ namespace captidom
 
     public:
         const Receiver *receiver;
-        ChannelList *channels;
+        ChannelList *channels = 0;
 
-        Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport);
-        Client(const UnprovisionedChannel **channels, int numChannels);
+        Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels = 0, int numChannels = 0);
         ~Client();
 
         // void onMessageReceived(DescribeRequestMessage *msg);

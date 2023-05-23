@@ -5,7 +5,7 @@
 
 namespace captidom
 {
-    Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport) : transport(transport)
+    Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels, int numChannels) : transport(transport)
     {
         char *buffer = (char *)malloc(sizeof(char *) * strlen(deviceId + 1));
         memcpy(buffer, deviceId, strlen(deviceId) + 1);
@@ -23,8 +23,6 @@ namespace captidom
         memcpy(buffer, CAPTIDOM_CLIENT_VERSION, strlen(CAPTIDOM_CLIENT_VERSION) + 1);
         this->version = buffer;
 
-        this->channels = new ChannelList(nullptr, 0);
-
         this->receiver = new Receiver(this);
 
         if (this->transport)
@@ -32,11 +30,10 @@ namespace captidom
             this->transport->setReceiver(this->receiver);
         }
 
-        this->sendWakeup();
-    }
-    Client::Client(const UnprovisionedChannel **channels, int numChannels)
-    {
-        this->channels = new ChannelList(channels, numChannels);
+        if (numChannels)
+        {
+            this->channels = new ChannelList(channels, numChannels);
+        }
 
         this->sendWakeup();
     }
@@ -47,7 +44,10 @@ namespace captidom
         free(this->version);
         free(this->ip);
         free(this->platform);
-        delete this->channels;
+        if (this->channels)
+        {
+            delete this->channels;
+        }
         delete this->receiver;
     }
 
