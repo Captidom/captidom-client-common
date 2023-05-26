@@ -111,4 +111,5 @@ TEST(clientDescribe, respondToDescribe)
     transport.receiveDescribeRequest();
 
     delete client;
+    delete ch1;
 }
