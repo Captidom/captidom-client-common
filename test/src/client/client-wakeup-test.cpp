@@ -17,6 +17,8 @@ MATCHER_P(WakeupMessageEquals, other, "Equality matcher for type WakeupMessage")
     EXPECT_TRUE(0 == strcmp(arg->getPlatform(), other->getPlatform())) << "Expected platform \"" << other->getPlatform() << "\" got \"" << arg->getPlatform() << "\"";
     EXPECT_TRUE(0 == strcmp(arg->getIp(), other->getIp())) << "Expected ip \"" << other->getIp() << "\" got \"" << arg->getIp() << "\"";
     EXPECT_TRUE(0 == strcmp(arg->getVersion(), other->getVersion())) << "Expected version \"" << other->getVersion() << "\" got \"" << arg->getVersion() << "\"";
+
+    return true;
 }
 
 TEST(clientWakeup, respondToWakeupBroadcast)

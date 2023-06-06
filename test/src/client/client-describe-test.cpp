@@ -57,6 +57,8 @@ MATCHER_P(DescribeMessageEquals, other, "Equality matcher for type DescribeMessa
 {
     EXPECT_TRUE(0 == strcmp(arg->getDeviceId(), other->getDeviceId())) << "Expected hwInfo \"" << other->getDeviceId() << "\" got \"" << arg->getDeviceId() << "\"";
     EXPECT_TRUE(compareChannelLists(arg->getChannels(), other->getChannels()));
+
+    return true;
 }
 
 TEST(clientDescribe, respondToDescribe_noChannels)

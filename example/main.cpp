@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <cstdio>
 
 #include "captidom-client-common/util/list.h"
 #include "captidom-client-common/channel/unprovisioned-channel.h"
