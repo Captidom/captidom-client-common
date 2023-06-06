@@ -71,7 +71,7 @@ TEST(clientDescribe, respondToDescribe_noChannels)
     MockTransport transport;
     const DescribeMessage describeResponse(deviceId, &list);
 
-    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(1);
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(0);
     EXPECT_CALL(
         transport,
         send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
@@ -102,7 +102,7 @@ TEST(clientDescribe, respondToDescribe)
 
     MockTransport transport;
     const DescribeMessage describeResponse(deviceId, &list);
-    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(1);
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(_))).Times(0);
     EXPECT_CALL(
         transport,
         send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))

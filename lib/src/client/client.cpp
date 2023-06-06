@@ -31,8 +31,6 @@ namespace captidom
         }
 
         this->channels = new ChannelList(channels, numChannels);
-
-        this->sendWakeup();
     }
 
     Client::~Client()
@@ -58,6 +56,11 @@ namespace captidom
     }
 
     Client::Receiver::Receiver(Client *client) : client(client){};
+
+    void Client::Receiver::onConnected() const
+    {
+        this->client->sendWakeup();
+    };
 
     void Client::Receiver::onMessageReceived(WakeupBroadcastMessage *request) const
     {

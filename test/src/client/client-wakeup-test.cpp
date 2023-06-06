@@ -30,7 +30,7 @@ TEST(clientWakeup, respondToWakeupBroadcast)
     MockTransport transport;
     const WakeupMessage response(platform, ip, CAPTIDOM_CLIENT_VERSION);
 
-    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(0);
 
     Client *client = new Client(deviceId, platform, ip, &transport);
 
@@ -43,7 +43,7 @@ TEST(clientWakeup, respondToWakeupBroadcast)
     delete client;
 }
 
-TEST(clientWakeup, sendsWakeupOnStart)
+TEST(clientWakeup, sendsWakeupOnConnected)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
@@ -52,9 +52,13 @@ TEST(clientWakeup, sendsWakeupOnStart)
     MockTransport transport;
     const WakeupMessage response(platform, ip, CAPTIDOM_CLIENT_VERSION);
 
-    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(0);
 
     Client *client = new Client(deviceId, platform, ip, &transport);
+
+    EXPECT_CALL(transport, send(Matcher<const WakeupMessage *>(WakeupMessageEquals(&response)))).Times(1);
+
+    transport.connect();
 
     delete client;
 }

@@ -20,6 +20,7 @@ namespace captidom
 
         public:
             Receiver(Client *client);
+            void onConnected() const;
             void onMessageReceived(WakeupBroadcastMessage *request) const;
             void onMessageReceived(DescribeRequestMessage *request) const;
         };

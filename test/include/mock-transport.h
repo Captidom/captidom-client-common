@@ -14,6 +14,11 @@ namespace captidom
         MOCK_METHOD(void, send, (const WakeupMessage *message), (const override));
         MOCK_METHOD(void, send, (const DescribeMessage *message), (const override));
 
+        void connect()
+        {
+            this->receiver->onConnected();
+        }
+
         void receiveWakeupBroadcast()
         {
             WakeupBroadcastMessage request;

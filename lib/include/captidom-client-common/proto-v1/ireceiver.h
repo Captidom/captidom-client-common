@@ -9,6 +9,8 @@ namespace captidom
     class IReceiver
     {
     public:
+        virtual void onConnected() const = 0;
+
         virtual void onMessageReceived(WakeupBroadcastMessage *request) const = 0;
         virtual void onMessageReceived(DescribeRequestMessage *request) const = 0;
     };
