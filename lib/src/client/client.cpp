@@ -71,4 +71,8 @@ namespace captidom
     {
         this->client->sendDescribe();
     };
+
+    void Client::Receiver::onMessageReceived(ProvisionMessage *request) const
+    {
+    };
 }

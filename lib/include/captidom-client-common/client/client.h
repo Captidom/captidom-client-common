@@ -23,6 +23,7 @@ namespace captidom
             void onConnected() const;
             void onMessageReceived(WakeupBroadcastMessage *request) const;
             void onMessageReceived(DescribeRequestMessage *request) const;
+            void onMessageReceived(ProvisionMessage *request) const;
         };
 
         char *deviceId;
