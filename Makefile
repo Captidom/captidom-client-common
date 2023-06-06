@@ -62,11 +62,27 @@ $(BINDIR)/example: library $(EXAMPLE_OBJ_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:lcaptidomclientcommon
+	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lcaptidomclientcommon
 
 example: $(BINDIR)/example
 
 testlib: $(BINDIR)/googletest/lib/libgtest.a
+
+library-esp8266:
+	CXX=xtensa-lx106-elf-g++ CROSS_COMPILE=xtensa-lx106-elf- $(MAKE) library
+
+arduino-library: build/arduino-library/captidom-client-common/library.properties
+
+build/arduino-library/captidom-client-common/library.properties: library-esp8266
+	mkdir -p build/arduino-library/captidom-client-common/src
+	cp static/arduino/library.properties build/arduino-library/captidom-client-common/
+	cp -r lib/include/captidom-client-common build/arduino-library/captidom-client-common/src
+
+	mkdir -p build/arduino-library/captidom-client-common/src/esp8266
+	cp -r build/xtensa-lx106-elf/libcaptidomclientcommon.a build/arduino-library/captidom-client-common/src/esp8266
+
+	( { cd build/arduino-library/captidom-client-common/src/ && find . -name *.h; } | tail -n +2 | cut -c 3- | sed 's/.*/#include "&"/' > build/arduino-library/captidom-client-common/src/captidom-client-common.h)
+
 
 $(BINDIR)/googletest/lib/libgtest.a:
 	mkdir -p $(BINDIR)/googletest
