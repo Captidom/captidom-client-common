@@ -104,7 +104,7 @@ ${BUILD}/test/%.bin: ${BUILD}/obj/test/%.o testlib
 	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(BINDIR)/googletest/lib/libgmock.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -lcaptidomclientcommon
 
 runtest: test
-	$(foreach path,$(TEST_BIN_FILES),LD_LIBRARY_PATH=$(BINDIR) ./$(path);)
+	$(foreach path,$(TEST_BIN_FILES),LD_LIBRARY_PATH=$(BINDIR) ./$(path) &&) echo ''
 
 all: library example test
 
