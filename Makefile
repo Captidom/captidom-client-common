@@ -16,8 +16,8 @@ CC=$(CROSS_COMPILE)gcc
 AR=$(CROSS_COMPILE)ar
 DEPENDENCY_CFLAGS=
 DEPENDENCY_CXXFLAGS=
-LIB_CFLAGS=$(GLOBAL_CFLAGS) -I$(LIB_IDIR) -std=c++11 -fPIC
-EXAMPLE_CFLAGS=$(GLOBAL_CFLAGS) -I$(EXAMPLE_IDIR) -I$(LIB_IDIR) -std=c++11
+LIB_CFLAGS=$(GLOBAL_CFLAGS) -I$(LIB_IDIR) -std=gnu++17 -fPIC -Werror
+EXAMPLE_CFLAGS=$(GLOBAL_CFLAGS) -I$(EXAMPLE_IDIR) -I$(LIB_IDIR) -std=gnu++17
 STATIC_LIBS = -lstdc++
 SHARED_LIBS = 
 LIBS = -Wl,-Bstatic $(STATIC_LIBS) -Wl,-Bdynamic $(SHARED_LIBS)
@@ -95,7 +95,7 @@ ${BUILD}/obj/test/%.o: test/%.cpp  $(HEADER_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -Itest/include -std=c++11
+	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -Itest/include
 
 ${BUILD}/test/%.bin: ${BUILD}/obj/test/%.o testlib
 	mkdir -p $(dir $@)
