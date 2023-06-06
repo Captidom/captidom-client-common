@@ -13,6 +13,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 .DEFAULT_GOAL := all
 
 CC=$(CROSS_COMPILE)gcc
+AR=$(CROSS_COMPILE)ar
 DEPENDENCY_CFLAGS=
 DEPENDENCY_CXXFLAGS=
 LIB_CFLAGS=$(GLOBAL_CFLAGS) -I$(LIB_IDIR) -std=c++11 -fPIC
@@ -48,20 +49,20 @@ $(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp  $(HEADER_FILES)
 	$(CC) -c -o $@ $< $(EXAMPLE_CFLAGS)
 
 
-$(BINDIR)/captidom-client-common.so: $(OBJ_FILES)
+$(BINDIR)/libcaptidomclientcommon.a: $(OBJ_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -shared -o $@ $^ $(LIB_CFLAGS) $(LIBS) $(LDFLAGS)
+	$(AR) rcs $@ $(OBJ_FILES)
 
 
-library: $(BINDIR)/captidom-client-common.so
+library: $(BINDIR)/libcaptidomclientcommon.a
 
 $(BINDIR)/example: library $(EXAMPLE_OBJ_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-client-common.so
+	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:lcaptidomclientcommon
 
 example: $(BINDIR)/example
 
@@ -84,7 +85,7 @@ ${BUILD}/test/%.bin: ${BUILD}/obj/test/%.o testlib
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(BINDIR)/googletest/lib/libgmock.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -l:captidom-client-common.so
+	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(BINDIR)/googletest/lib/libgmock.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -lcaptidomclientcommon
 
 runtest: test
 	$(foreach path,$(TEST_BIN_FILES),LD_LIBRARY_PATH=$(BINDIR) ./$(path);)
