@@ -12,6 +12,11 @@ using namespace captidom;
 using ::testing::_;
 using ::testing::Matcher;
 
+namespace
+{
+    captidom::ChannelType types[] = {captidom::ChannelType::CHANNEL_TYPE_ANALOG_IN};
+    captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
+}
 
 TEST(clientWakeup, receiveProvision)
 {
@@ -21,7 +26,10 @@ TEST(clientWakeup, receiveProvision)
 
     MockTransport transport;
 
-    Client *client = new Client(deviceId, platform, ip, &transport);
+    const UnprovisionedChannel *ch1 = new captidom::UnprovisionedChannel(990, "test", 4, types, 1, pollModes, 1);
+    const UnprovisionedChannel *channelArray[1] = {ch1};
+
+    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1);
 
     transport.receiveProvisionMessage();
 
