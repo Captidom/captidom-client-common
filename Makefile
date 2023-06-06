@@ -2,8 +2,10 @@ LIB_IDIR=lib/include/captidom-client-common
 EXAMPLE_IDIR=lib/include
 SRC_DIR=lib/src
 EXAMPLE_DIR=example
-OBJ_DIR=build/obj
-BINDIR=build
+ARCH=$(shell ${CC} -dumpmachine)
+BUILD=build/${ARCH}
+OBJ_DIR=${BUILD}/obj
+BINDIR=${BUILD}
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
@@ -25,34 +27,29 @@ CPP_FILES := $(CPP_FILES)$(wildcard $(SRC_DIR)/*.cpp)
 HEADER_FILES := $(wildcard $(LIB_IDIR)/*/*.h)
 HEADER_FILES := $(HEADER_FILES)$(wildcard $(LIB_IDIR)/*.h)
 EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
-OBJ_FILES := $(patsubst $(SRC_DIR)/%,build/obj/%,$(CPP_FILES:.cpp=.o))
+OBJ_FILES := $(patsubst $(SRC_DIR)/%,${BUILD}/obj/%,$(CPP_FILES:.cpp=.o))
 EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
 
 TEST_CPP_FILES := $(wildcard test/src/*/*.cpp) 
 TEST_CPP_FILES := $(TEST_CPP_FILES)$(wildcard test/src/*.cpp)
-TEST_OBJ_FILES := $(patsubst test/%,build/obj/test/%,$(TEST_CPP_FILES:.cpp=.o))
-TEST_BIN_FILES := $(patsubst build/obj/test/%,build/test/%,$(TEST_OBJ_FILES:.o=.bin))
+TEST_OBJ_FILES := $(patsubst test/%,${BUILD}/obj/test/%,$(TEST_CPP_FILES:.cpp=.o))
+TEST_BIN_FILES := $(patsubst ${BUILD}/obj/test/%,${BUILD}/test/%,$(TEST_OBJ_FILES:.o=.bin))
 
-ARCH=
-ARCH_ARMHF=arm-linux-gnueabihf
-ARCH_AARCH64=aarch64-linux-gnu
-
-CMAKE_TOOLCHAIN=
-CONFIGURE_ARCH=
-
-build/obj/%.o: $(SRC_DIR)/%.cpp $(HEADER_FILES)
+${BUILD}/obj/%.o: $(SRC_DIR)/%.cpp $(HEADER_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS)
 
 $(OBJ_DIR)/example/%.o: $(EXAMPLE_DIR)/%.cpp  $(HEADER_FILES)
+	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(EXAMPLE_CFLAGS)
 
 
 $(BINDIR)/captidom-client-common.so: $(OBJ_FILES)
+	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -shared -o $@ $^ $(LIB_CFLAGS) $(LIBS) $(LDFLAGS)
@@ -61,6 +58,7 @@ $(BINDIR)/captidom-client-common.so: $(OBJ_FILES)
 library: $(BINDIR)/captidom-client-common.so
 
 $(BINDIR)/example: library $(EXAMPLE_OBJ_FILES)
+	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -o $@ $(EXAMPLE_OBJ_FILES) $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -l:captidom-client-common.so
@@ -71,18 +69,18 @@ testlib: $(BINDIR)/googletest/lib/libgtest.a
 
 $(BINDIR)/googletest/lib/libgtest.a:
 	mkdir -p $(BINDIR)/googletest
-	cd $(BINDIR)/googletest && cmake ../../testlib/googletest
+	cd $(BINDIR)/googletest && cmake ../../../testlib/googletest
 	cd $(BINDIR)/googletest && $(MAKE)
 
 test: library testlib $(TEST_BIN_FILES)
 
-build/obj/test/%.o: test/%.cpp  $(HEADER_FILES)
+${BUILD}/obj/test/%.o: test/%.cpp  $(HEADER_FILES)
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -Itest/include -std=c++11
 
-build/test/%.bin: build/obj/test/%.o testlib
+${BUILD}/test/%.bin: ${BUILD}/obj/test/%.o testlib
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
@@ -96,9 +94,6 @@ all: library example test
 .PHONY: clean
 
 clean:
-	rm -f $(TEST_BIN_FILES) $(OBJ_FILES) ${EXAMPLE_OBJ_FILES} $(TEST_OBJ_FILES)
-	rm -f $(BINDIR)/captidom-client-common.so
-	rm -f $(BINDIR)/example
-	rm -rf $(BINDIR)/googletest
+	rm -rf build
 
 
