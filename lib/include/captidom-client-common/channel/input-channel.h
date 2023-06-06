@@ -1,9 +1,5 @@
 #pragma once
 
-#include <functional>
-#include <chrono>
-#include <thread>
-
 #include "captidom-client-common/channel/base-channel.h"
 #include "captidom-client-common/channel/base-provisioned-channel.h"
 

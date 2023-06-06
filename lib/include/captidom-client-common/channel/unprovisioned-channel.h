@@ -1,8 +1,5 @@
 #pragma once
 
-#include <functional>
-#include <chrono>
-#include <thread>
 #include <string.h>
 
 #include "captidom-client-common/util/list.h"
