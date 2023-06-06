@@ -79,7 +79,7 @@ build/arduino-library/captidom-client-common/library.properties: library-esp8266
 	cp -r lib/include/captidom-client-common build/arduino-library/captidom-client-common/src
 
 	mkdir -p build/arduino-library/captidom-client-common/src/esp8266
-	cp -r build/xtensa-lx106-elf/libcaptidomclientcommon.a build/arduino-library/captidom-client-common/src/esp8266
+	cp build/xtensa-lx106-elf/libcaptidomclientcommon.a build/arduino-library/captidom-client-common/src/esp8266/captidomclientcommon.a
 
 	( { cd build/arduino-library/captidom-client-common/src/ && find . -name *.h; } | tail -n +2 | cut -c 3- | sed 's/.*/#include "&"/' > build/arduino-library/captidom-client-common/src/captidom-client-common.h)
 
