@@ -4,8 +4,8 @@
 #include <chrono>
 #include <thread>
 
-#include "input-channel.h"
-#include "channel-value-callback.h"
+#include "captidom-client-common/channel/input-channel.h"
+#include "captidom-client-common/channel/channel-value-callback.h"
 
 namespace captidom
 {

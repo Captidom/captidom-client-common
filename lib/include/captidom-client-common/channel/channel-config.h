@@ -1,7 +1,7 @@
 #pragma once
 
-#include "channel-type.h"
-#include "channel-mode.h"
+#include "captidom-client-common/channel/channel-type.h"
+#include "captidom-client-common/channel/channel-mode.h"
 
 namespace captidom {
 

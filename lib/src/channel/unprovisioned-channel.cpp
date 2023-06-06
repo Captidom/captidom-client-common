@@ -1,4 +1,4 @@
-#include "channel/unprovisioned-channel.h"
+#include "captidom-client-common/channel/unprovisioned-channel.h"
 
 namespace captidom
 {

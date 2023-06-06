@@ -4,8 +4,8 @@
 #include <chrono>
 #include <thread>
 
-#include "base-channel.h"
-#include "base-provisioned-channel.h"
+#include "captidom-client-common/channel/base-channel.h"
+#include "captidom-client-common/channel/base-provisioned-channel.h"
 
 namespace captidom
 {

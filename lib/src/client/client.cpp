@@ -1,7 +1,7 @@
-#include "client/client.h"
-#include "client/version.h"
+#include "captidom-client-common/client/client.h"
+#include "captidom-client-common/client/version.h"
 
-#include "proto-v1/describe-message.h"
+#include "captidom-client-common/proto-v1/describe-message.h"
 
 namespace captidom
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "proto-v1/base-message.h"
-#include "channel/channel-list.h"
+#include "captidom-client-common/proto-v1/base-message.h"
+#include "captidom-client-common/channel/channel-list.h"
 
 namespace captidom
 {

@@ -1,4 +1,4 @@
-#include "channel/input-channel.h"
+#include "captidom-client-common/channel/input-channel.h"
 
 namespace captidom
 {

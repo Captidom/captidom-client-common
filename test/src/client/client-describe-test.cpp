@@ -2,7 +2,7 @@
 #include "captidom-client-common/proto-v1/wakeup-message.h"
 #include "captidom-client-common/proto-v1/describe-message.h"
 #include "captidom-client-common/proto-v1/describe-request-message.h"
-#include "client/version.h"
+#include "captidom-client-common/client/version.h"
 #include "mock-transport.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"

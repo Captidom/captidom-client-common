@@ -1,6 +1,6 @@
 #pragma once
 
-#include "proto-v1/message-type.h"
+#include "captidom-client-common/proto-v1/message-type.h"
 
 namespace captidom
 {

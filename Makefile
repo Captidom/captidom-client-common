@@ -1,4 +1,4 @@
-LIB_IDIR=lib/include/captidom-client-common
+LIB_IDIR=lib/include
 EXAMPLE_IDIR=lib/include
 SRC_DIR=lib/src
 EXAMPLE_DIR=example

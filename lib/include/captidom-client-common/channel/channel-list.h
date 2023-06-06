@@ -1,7 +1,7 @@
 #pragma once
 
-#include "util/list.h"
-#include "unprovisioned-channel.h"
+#include "captidom-client-common/util/list.h"
+#include "captidom-client-common/channel/unprovisioned-channel.h"
 
 namespace captidom
 {

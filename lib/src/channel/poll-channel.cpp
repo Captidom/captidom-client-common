@@ -1,4 +1,4 @@
-#include "channel/poll-channel.h"
+#include "captidom-client-common/channel/poll-channel.h"
 
 namespace captidom
 {

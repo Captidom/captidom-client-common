@@ -1,4 +1,4 @@
-#include "channel/push-channel.h"
+#include "captidom-client-common/channel/push-channel.h"
 
 namespace captidom
 {

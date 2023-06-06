@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base-channel.h"
+#include "captidom-client-common/channel/base-channel.h"
 
 namespace captidom {
 

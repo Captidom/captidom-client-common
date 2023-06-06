@@ -1,9 +1,9 @@
 #pragma once
 
-#include "proto-v1/wakeup-broadcast-message.h"
-#include "proto-v1/wakeup-message.h"
-#include "proto-v1/describe-message.h"
-#include "proto-v1/ireceiver.h"
+#include "captidom-client-common/proto-v1/wakeup-broadcast-message.h"
+#include "captidom-client-common/proto-v1/wakeup-message.h"
+#include "captidom-client-common/proto-v1/describe-message.h"
+#include "captidom-client-common/proto-v1/ireceiver.h"
 
 namespace captidom
 {

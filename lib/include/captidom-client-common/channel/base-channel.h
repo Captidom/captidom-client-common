@@ -5,8 +5,8 @@
 #include <thread>
 #include <string.h>
 
-#include "util/list.h"
-#include "channel-config.h"
+#include "captidom-client-common/util/list.h"
+#include "captidom-client-common/channel/channel-config.h"
 
 namespace captidom
 {
