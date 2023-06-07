@@ -31,7 +31,7 @@ EXAMPLE_SRC_FILES := $(EXAMPLE_DIR)/main.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,${BUILD}/obj/%,$(CPP_FILES:.cpp=.o))
 EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EXAMPLE_SRC_FILES))
 
-TEST_CPP_FILES := $(wildcard test/src/*/*.cpp) 
+TEST_CPP_FILES := $(wildcard test/src/*/*.cpp) $(wildcard test/src/*/*/*.cpp)
 TEST_CPP_FILES := $(TEST_CPP_FILES)$(wildcard test/src/*.cpp)
 TEST_OBJ_FILES := $(patsubst test/%,${BUILD}/obj/test/%,$(TEST_CPP_FILES:.cpp=.o))
 TEST_BIN_FILES := ${BUILD}/test/main-test
