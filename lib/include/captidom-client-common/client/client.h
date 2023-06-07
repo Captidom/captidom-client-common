@@ -42,9 +42,5 @@ namespace captidom
 
         Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels = 0, int numChannels = 0);
         ~Client();
-
-        // void onMessageReceived(DescribeRequestMessage *msg);
-        // void onMessageReceived(UpgradeRequestMessage *msg);
-        // void onMessageReceived(ProvisionMessage *msg);
     };
 }
