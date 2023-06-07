@@ -34,7 +34,7 @@ EXAMPLE_OBJ_FILES := $(patsubst $(EXAMPLE_DIR)/%.cpp,$(OBJ_DIR)/example/%.o,$(EX
 TEST_CPP_FILES := $(wildcard test/src/*/*.cpp) 
 TEST_CPP_FILES := $(TEST_CPP_FILES)$(wildcard test/src/*.cpp)
 TEST_OBJ_FILES := $(patsubst test/%,${BUILD}/obj/test/%,$(TEST_CPP_FILES:.cpp=.o))
-TEST_BIN_FILES := $(patsubst ${BUILD}/obj/test/%,${BUILD}/test/%,$(TEST_OBJ_FILES:.o=.bin))
+TEST_BIN_FILES := ${BUILD}/test/main-test
 
 ${BUILD}/obj/%.o: $(SRC_DIR)/%.cpp $(HEADER_FILES)
 	mkdir -p $(dir $@)
@@ -97,11 +97,11 @@ ${BUILD}/obj/test/%.o: test/%.cpp  $(HEADER_FILES)
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
 	$(CC) -c -o $@ $< $(LIB_CFLAGS) -I$(EXAMPLE_IDIR) -Itestlib/googletest/googletest/include -Itestlib/googletest/googlemock/include -Itest/include
 
-${BUILD}/test/%.bin: ${BUILD}/obj/test/%.o testlib
+${BUILD}/test/main-test: ${TEST_OBJ_FILES} testlib
 	mkdir -p $(dir $@)
 	CFLAGS="$(DEPENDENCY_CFLAGS)" \
 	CXXFLAGS="$(DEPENDENCY_CXXFLAGS)" \
-	$(CC) -o $@ $< $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(BINDIR)/googletest/lib/libgmock.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -lcaptidomclientcommon
+	$(CC) -o $@ ${TEST_OBJ_FILES} $(BINDIR)/googletest/lib/libgtest.a $(BINDIR)/googletest/lib/libgtest_main.a $(BINDIR)/googletest/lib/libgmock.a $(EXAMPLE_CFLAGS) $(LIBS) $(LDFLAGS) -L$(BINDIR) -lpthread -lm  -lcaptidomclientcommon
 
 runtest: test
 	$(foreach path,$(TEST_BIN_FILES),LD_LIBRARY_PATH=$(BINDIR) ./$(path) &&) echo ''
