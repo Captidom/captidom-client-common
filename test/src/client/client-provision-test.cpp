@@ -33,12 +33,22 @@ TEST(clientWakeup, receiveProvision)
 
     ChannelList list(channelArray, 1);
     const DescribeMessage describeResponse(deviceId, &list);
+    EXPECT_CALL(
+        transport,
+        send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
+        .Times(1);
 
     ProvisionMessage requestThatDoesNotExist(1);
     transport.receiveProvisionMessage(&requestThatDoesNotExist);
+    transport.receiveDescribeRequest();
 
+    EXPECT_CALL(
+        transport,
+        send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
+        .Times(1);
     ProvisionMessage requestThatExists(channelId);
     transport.receiveProvisionMessage(&requestThatDoesNotExist);
+    transport.receiveDescribeRequest();
 
     delete client;
 }
