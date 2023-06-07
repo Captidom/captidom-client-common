@@ -25,7 +25,7 @@ namespace
     captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-TEST(clientWakeup, provisionFailForUnknownChannel)
+TEST(clientProvision, provisionFailForUnknownChannel)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
@@ -55,7 +55,7 @@ TEST(clientWakeup, provisionFailForUnknownChannel)
     delete client;
 }
 
-TEST(clientWakeup, provisionFailForChannelWithUnsupportedType)
+TEST(clientProvision, provisionFailForChannelWithUnsupportedType)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
@@ -85,7 +85,7 @@ TEST(clientWakeup, provisionFailForChannelWithUnsupportedType)
     delete client;
 }
 
-TEST(clientWakeup, provisionOKForInputChannel)
+TEST(clientProvision, provisionOKForInputChannel)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
@@ -115,7 +115,7 @@ TEST(clientWakeup, provisionOKForInputChannel)
     delete client;
 }
 
-TEST(clientWakeup, provisionFailWithUnsupportedMode)
+TEST(clientProvision, provisionFailWithUnsupportedMode)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
