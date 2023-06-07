@@ -25,7 +25,7 @@ namespace
     captidom::ChannelMode pollModes[] = {captidom::ChannelMode::CHANNEL_MODE_POLL};
 }
 
-TEST(clientWakeup, receiveProvision)
+TEST(clientWakeup, provisionFailForUnknownChannel)
 {
     const char *deviceId = "SOMEID";
     const char *platform = "some-test-platform";
@@ -49,6 +49,55 @@ TEST(clientWakeup, receiveProvision)
         .Times(0);
 
     transport.receiveProvisionMessage(&requestThatDoesNotExist);
+
+    delete client;
+}
+
+TEST(clientWakeup, provisionFailForChannelWithUnsupportedType)
+{
+    const char *deviceId = "SOMEID";
+    const char *platform = "some-test-platform";
+    const char *ip = "127.0.0.1";
+
+    const int channelId = 990;
+
+    MockTransport transport;
+    MockChannelFactory chFactory;
+
+    const UnprovisionedChannel *ch1 = new captidom::UnprovisionedChannel(channelId, "test", 4, types, 1, pollModes, 1);
+    const UnprovisionedChannel *channelArray[1] = {ch1};
+
+    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1, &chFactory);
+
+    ChannelList list(channelArray, 1);
+
+    ProvisionMessage requestThatIsNotSupported(channelId, ChannelType::CHANNEL_TYPE_DIGITAL_IN);
+    EXPECT_CALL(
+        chFactory,
+        createInputChannel(ProvisionMessageEquals(&requestThatIsNotSupported)))
+        .Times(0);
+    transport.receiveProvisionMessage(&requestThatIsNotSupported);
+
+    delete client;
+}
+
+TEST(clientWakeup, provisionOKForInputChannel)
+{
+    const char *deviceId = "SOMEID";
+    const char *platform = "some-test-platform";
+    const char *ip = "127.0.0.1";
+
+    const int channelId = 990;
+
+    MockTransport transport;
+    MockChannelFactory chFactory;
+
+    const UnprovisionedChannel *ch1 = new captidom::UnprovisionedChannel(channelId, "test", 4, types, 1, pollModes, 1);
+    const UnprovisionedChannel *channelArray[1] = {ch1};
+
+    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1, &chFactory);
+
+    ChannelList list(channelArray, 1);
 
     ProvisionMessage requestThatExists(channelId, ChannelType::CHANNEL_TYPE_ANALOG_IN);
     EXPECT_CALL(

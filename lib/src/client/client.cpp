@@ -80,6 +80,11 @@ namespace captidom
             return;
         }
 
+        if (!ch->supportsType(request->getChannelType()))
+        {
+            return;
+        }
+
         ChannelFactory *factory = this->client->channelFactory;
         ChannelFamily family = factory->getChannelFamily(request);
 
