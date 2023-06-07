@@ -5,6 +5,16 @@
 
 namespace captidom
 {
+    void provisionInputChannel(Client *client, const UnprovisionedChannel *ch, const ProvisionMessage *message, const ChannelFactory *factory)
+    {
+        if (!ch->supportsMode(message->getDescription()->input.mode))
+        {
+            return;
+        }
+
+        factory->createInputChannel(message);
+    }
+
     Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels, int numChannels, ChannelFactory *channelFactory) : transport(transport), channelFactory(channelFactory)
     {
         char *buffer = (char *)malloc(sizeof(char *) * strlen(deviceId + 1));
@@ -90,7 +100,7 @@ namespace captidom
 
         if (ChannelFamily::CHANNEL_FAMILY_IN == family)
         {
-            factory->createInputChannel(request);
+            provisionInputChannel(client, ch, request, factory);
         }
     };
 }

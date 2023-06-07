@@ -41,8 +41,10 @@ TEST(clientWakeup, provisionFailForUnknownChannel)
 
     Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1, &chFactory);
 
+    ProvisionMessage::Description description = {.input = {.mode = ChannelMode::CHANNEL_MODE_POLL}};
+
     ChannelList list(channelArray, 1);
-    ProvisionMessage requestThatDoesNotExist(1, ChannelType::CHANNEL_TYPE_ANALOG_IN);
+    ProvisionMessage requestThatDoesNotExist(1, ChannelType::CHANNEL_TYPE_ANALOG_IN, description);
     EXPECT_CALL(
         chFactory,
         createInputChannel(ProvisionMessageEquals(&requestThatDoesNotExist)))
@@ -71,7 +73,9 @@ TEST(clientWakeup, provisionFailForChannelWithUnsupportedType)
 
     ChannelList list(channelArray, 1);
 
-    ProvisionMessage requestThatIsNotSupported(channelId, ChannelType::CHANNEL_TYPE_DIGITAL_IN);
+    ProvisionMessage::Description description = {.input = {.mode = ChannelMode::CHANNEL_MODE_POLL}};
+
+    ProvisionMessage requestThatIsNotSupported(channelId, ChannelType::CHANNEL_TYPE_DIGITAL_IN, description);
     EXPECT_CALL(
         chFactory,
         createInputChannel(ProvisionMessageEquals(&requestThatIsNotSupported)))
@@ -99,11 +103,43 @@ TEST(clientWakeup, provisionOKForInputChannel)
 
     ChannelList list(channelArray, 1);
 
-    ProvisionMessage requestThatExists(channelId, ChannelType::CHANNEL_TYPE_ANALOG_IN);
+    ProvisionMessage::Description description = {.input = {.mode = ChannelMode::CHANNEL_MODE_POLL}};
+
+    ProvisionMessage requestThatExists(channelId, ChannelType::CHANNEL_TYPE_ANALOG_IN, description);
     EXPECT_CALL(
         chFactory,
         createInputChannel(ProvisionMessageEquals(&requestThatExists)))
         .Times(1);
+    transport.receiveProvisionMessage(&requestThatExists);
+
+    delete client;
+}
+
+TEST(clientWakeup, provisionFailWithUnsupportedMode)
+{
+    const char *deviceId = "SOMEID";
+    const char *platform = "some-test-platform";
+    const char *ip = "127.0.0.1";
+
+    const int channelId = 990;
+
+    MockTransport transport;
+    MockChannelFactory chFactory;
+
+    const UnprovisionedChannel *ch1 = new captidom::UnprovisionedChannel(channelId, "test", 4, types, 1, pollModes, 1);
+    const UnprovisionedChannel *channelArray[1] = {ch1};
+
+    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1, &chFactory);
+
+    ChannelList list(channelArray, 1);
+
+    ProvisionMessage::Description description = {.input = {.mode = ChannelMode::CHANNEL_MODE_PUSH}};
+
+    ProvisionMessage requestThatExists(channelId, ChannelType::CHANNEL_TYPE_ANALOG_IN, description);
+    EXPECT_CALL(
+        chFactory,
+        createInputChannel(ProvisionMessageEquals(&requestThatExists)))
+        .Times(0);
     transport.receiveProvisionMessage(&requestThatExists);
 
     delete client;
