@@ -31,7 +31,9 @@ TEST(clientWakeup, receiveProvision)
 
     Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1);
 
-    transport.receiveProvisionMessage();
+    ProvisionMessage request(1);
+
+    transport.receiveProvisionMessage(&request);
 
     delete client;
 }

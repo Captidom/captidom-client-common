@@ -6,8 +6,14 @@ namespace captidom
 {
     class ProvisionMessage : BaseMessage
     {
+
+    private:
+        int channelId;
+
     public:
-        ProvisionMessage();
+        ProvisionMessage(int channelId);
         ~ProvisionMessage();
+
+        int getChannelId() const;
     };
 }

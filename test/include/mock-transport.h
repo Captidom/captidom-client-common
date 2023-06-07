@@ -19,10 +19,9 @@ namespace captidom
             this->receiver->onConnected();
         }
 
-        void receiveProvisionMessage()
+        void receiveProvisionMessage(ProvisionMessage *request)
         {
-            ProvisionMessage request;
-            this->receiver->onMessageReceived(&request);
+            this->receiver->onMessageReceived(request);
         }
 
         void receiveWakeupBroadcast()
