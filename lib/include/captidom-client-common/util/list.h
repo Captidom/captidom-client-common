@@ -105,7 +105,7 @@ namespace captidom
             }
         }
 
-        T *getItem(unsigned int index) const
+        T const *getItem(unsigned int index) const
         {
             if (index >= this->getCount() || 0 == this->firstItem)
             {
