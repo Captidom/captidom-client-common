@@ -5,7 +5,7 @@
 
 namespace captidom
 {
-    ProvisionMessage::ProvisionMessage(int channelId) : channelId(channelId), BaseMessage(MessageType::ProvisionMessageType){};
+    ProvisionMessage::ProvisionMessage(int channelId, ChannelType channelType) : channelId(channelId), channelType(channelType), BaseMessage(MessageType::ProvisionMessageType){};
 
     ProvisionMessage::~ProvisionMessage()
     {
@@ -14,5 +14,10 @@ namespace captidom
     int ProvisionMessage::getChannelId() const
     {
         return this->channelId;
+    };
+
+    ChannelType ProvisionMessage::getChannelType() const
+    {
+        return this->channelType;
     };
 }

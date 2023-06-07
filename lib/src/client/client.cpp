@@ -1,11 +1,11 @@
 #include "captidom-client-common/client/client.h"
 #include "captidom-client-common/client/version.h"
-
+#include <stdio.h>
 #include "captidom-client-common/proto-v1/describe-message.h"
 
 namespace captidom
 {
-    Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels, int numChannels) : transport(transport)
+    Client::Client(const char *const deviceId, const char *const platform, const char *const ip, ITransport *transport, const UnprovisionedChannel **channels, int numChannels, ChannelFactory *channelFactory) : transport(transport), channelFactory(channelFactory)
     {
         char *buffer = (char *)malloc(sizeof(char *) * strlen(deviceId + 1));
         memcpy(buffer, deviceId, strlen(deviceId) + 1);
@@ -74,5 +74,18 @@ namespace captidom
 
     void Client::Receiver::onMessageReceived(ProvisionMessage *request) const
     {
+        const UnprovisionedChannel *ch = this->client->channels->findById(request->getChannelId());
+        if (!ch)
+        {
+            return;
+        }
+
+        ChannelFactory *factory = this->client->channelFactory;
+        ChannelFamily family = factory->getChannelFamily(request);
+
+        if (ChannelFamily::CHANNEL_FAMILY_IN == family)
+        {
+            factory->createInputChannel(request);
+        }
     };
 }

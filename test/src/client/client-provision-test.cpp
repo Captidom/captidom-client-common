@@ -4,11 +4,20 @@
 #include "captidom-client-common/proto-v1/describe-request-message.h"
 #include "captidom-client-common/client/version.h"
 #include "mock-transport.h"
-#include "matchers/describe-message-matcher.h"
+#include "mock-channel-factory.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
 using namespace captidom;
+
+using ::testing::Matcher;
+
+MATCHER_P(ProvisionMessageEquals, other, "Equality matcher for type ProvisionMessage")
+{
+    EXPECT_EQ(arg->getChannelId(), other->getChannelId());
+    EXPECT_EQ(arg->getChannelType(), other->getChannelType());
+    return true;
+}
 
 namespace
 {
@@ -25,30 +34,28 @@ TEST(clientWakeup, receiveProvision)
     const int channelId = 990;
 
     MockTransport transport;
+    MockChannelFactory chFactory;
 
     const UnprovisionedChannel *ch1 = new captidom::UnprovisionedChannel(channelId, "test", 4, types, 1, pollModes, 1);
     const UnprovisionedChannel *channelArray[1] = {ch1};
 
-    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1);
+    Client *client = new Client(deviceId, platform, ip, &transport, channelArray, 1, &chFactory);
 
     ChannelList list(channelArray, 1);
-    const DescribeMessage describeResponse(deviceId, &list);
+    ProvisionMessage requestThatDoesNotExist(1, ChannelType::CHANNEL_TYPE_ANALOG_IN);
     EXPECT_CALL(
-        transport,
-        send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
-        .Times(1);
+        chFactory,
+        createInputChannel(ProvisionMessageEquals(&requestThatDoesNotExist)))
+        .Times(0);
 
-    ProvisionMessage requestThatDoesNotExist(1);
     transport.receiveProvisionMessage(&requestThatDoesNotExist);
-    transport.receiveDescribeRequest();
 
+    ProvisionMessage requestThatExists(channelId, ChannelType::CHANNEL_TYPE_ANALOG_IN);
     EXPECT_CALL(
-        transport,
-        send(Matcher<const DescribeMessage *>(DescribeMessageEquals(&describeResponse))))
+        chFactory,
+        createInputChannel(ProvisionMessageEquals(&requestThatExists)))
         .Times(1);
-    ProvisionMessage requestThatExists(channelId);
-    transport.receiveProvisionMessage(&requestThatDoesNotExist);
-    transport.receiveDescribeRequest();
+    transport.receiveProvisionMessage(&requestThatExists);
 
     delete client;
 }
